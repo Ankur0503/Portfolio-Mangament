@@ -38,6 +38,11 @@ export class AuthService {
     this.http.post<any>("http://localhost:8080/auth/login", user).subscribe(response => {
       this.userProfile = response
       this.isLoggedIn = true
+      var storedUser: any = {}
+      Object.assign(storedUser, this.userProfile)
+      storedUser.password = user.password
+      console.log(storedUser)
+      localStorage.setItem('currentUser', JSON.stringify(storedUser));
     },
       err => {
         this.errorFlag = true
