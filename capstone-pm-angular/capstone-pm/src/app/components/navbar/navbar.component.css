@@ -1,0 +1,57 @@
+/* Navbar Styling */
+.navbar-custom {
+    background-color: #4CAF50; /* Navbar background color */
+    border-bottom: 2px solid #388E3C; /* Border for emphasis */
+    padding: 0.5rem 1rem; /* Adjust padding as needed */
+}
+
+.navbar-custom .navbar-brand {
+    color: #fff; /* Brand text color */
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-custom .navbar-toggler {
+    border-color: #fff; /* Toggler button border color */
+}
+
+.navbar-custom .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDE4IDE4Ij48cmVjdCB4PSIwIiB5PSI3IiB3aWR0aD0iMTgiIGhlaWdodD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDAsMEwgMTggOCBMIDAsOCAiIGZpbGw9IiMwMDAiLz48L3N2Zz4=");
+}
+
+/* Nav Links */
+.navbar-custom .nav-link {
+    color: #fff; /* Nav link text color */
+    margin-right: 1rem; /* Space between links */
+}
+
+.navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
+    color: #E8F5E9; /* Color for hover and active state */
+    text-decoration: underline; /* Underline on hover and active */
+}
+
+/* Search Form Styling */
+.navbar-custom .search-form {
+    max-width: 500px; /* Maximum width of the form container */
+    width: 100%; /* Full width of the parent container */
+}
+
+.navbar-custom .search-input {
+    border-radius: 20px; /* Rounded corners */
+    padding: 0.5rem 1rem; /* Padding inside the input */
+    border: 1px solid #ccc; /* Border color */
+    max-width: 300px; /* Maximum width of the input field */
+    width: 100%; /* Full width of the parent container */
+}
+
+.navbar-custom .search-btn {
+    border-radius: 20px; /* Match button corners with input field */
+    border: 1px solid #fff; /* Button border color */
+    color: #fff; /* Text color */
+    padding: 0.5rem 1rem; /* Padding inside the button */
+}
+
+.navbar-custom .search-btn:hover {
+    background-color: #fff; /* Button background on hover */
+    color: #4CAF50; /* Text color on hover */
+}

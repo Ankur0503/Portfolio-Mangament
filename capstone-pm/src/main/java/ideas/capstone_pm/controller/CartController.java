@@ -35,4 +35,10 @@ public class CartController {
     public double computeTotalAmountInCart(@RequestBody ApplicationUser user) {
         return cartService.computeTotalAmountInCart(user);
     }
+
+    @PostMapping("/user/cart/process")
+    public void proceedToPay(@RequestBody ApplicationUser user) {
+        System.out.println(user);
+        cartService.processCart(user);
+    }
 }

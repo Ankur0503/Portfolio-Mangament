@@ -1,7 +1,9 @@
 package ideas.capstone_pm.controller;
 
 import ideas.capstone_pm.dto.LoginDTO;
+import ideas.capstone_pm.dto.UserDTO;
 import ideas.capstone_pm.dto.authentication.AuthenticationResponse;
+import ideas.capstone_pm.repository.UserRepository;
 import ideas.capstone_pm.service.ApplicationUserDetailsService;
 import ideas.capstone_pm.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -24,6 +24,9 @@ public class AuthController {
 
     @Autowired
     private ApplicationUserDetailsService applicationUserDetailsService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -36,8 +39,9 @@ public class AuthController {
         );
 
         final UserDetails userDetails = applicationUserDetailsService.loadUserByUsername(loginRequest.getEmail());
+        UserDTO userDTO = userRepository.findByUserEmail(loginRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(new AuthenticationResponse(userDTO, jwt));
     }
 }

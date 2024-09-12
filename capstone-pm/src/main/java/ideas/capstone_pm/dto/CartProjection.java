@@ -6,6 +6,7 @@ public interface CartProjection {
     CartItemsProjection getFund();
 
     interface CartItemsProjection {
+        Integer getFundId();
         String getFundName();
     }
 }
