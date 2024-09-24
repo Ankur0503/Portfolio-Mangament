@@ -2,6 +2,7 @@ package ideas.capstone_pm.controller;
 
 import ideas.capstone_pm.dto.TransactionDTO;
 import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.dto.TransactionResponseDTO;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Transaction;
 import ideas.capstone_pm.repository.FundRepository;
@@ -14,12 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
     @GetMapping("mutual-funds/user/investment")
-    public List<TransactionProjection> getFundsByUser(@RequestBody ApplicationUser user) {
+    public List<TransactionResponseDTO> getFundsByUser(@RequestParam Integer userId) {
+        ApplicationUser user = new ApplicationUser();
+        user.setUserId(userId);
         return transactionService.getFundsByUser(user);
     }
 
@@ -28,7 +32,7 @@ public class TransactionController {
         return transactionService.getTransactionByUserAndFund(user, fundId);
     }
 
-    @PostMapping("mutual-finds/user/investment/{fundId}/transaction")
+    @PostMapping("mutual-finds/user/investment")
     public TransactionDTO addTransaction(@RequestBody Transaction transaction) {
         return transactionService.addTransaction(transaction);
     }

@@ -14,4 +14,5 @@ import java.util.List;
 public class DashBoardFilters {
     List<String> fundAMCs;
     List<String> fundTypes;
+    List<String> fundRisks;
 }

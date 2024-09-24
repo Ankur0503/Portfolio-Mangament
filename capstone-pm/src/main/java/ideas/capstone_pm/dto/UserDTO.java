@@ -1,11 +1,17 @@
 package ideas.capstone_pm.dto;
 
-public interface UserDTO {
-    Integer getUserId();
-    String getUserName();
-    String getUserEmail();
-    String getUserPassword();
-    String getUserPhone();
-    Integer getUserAge();
-    String getUserRole();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
+    private Integer userId;
+    private String userName;
+    private String userPassword;
+    private String userPhone;
 }

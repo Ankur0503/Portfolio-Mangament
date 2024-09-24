@@ -23,7 +23,7 @@ public class ApplicationUser {
     private String userEmail;
     @Column(nullable = false)
     private String userPassword;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String userPhone;
     private int userAge;
     private String userRole;

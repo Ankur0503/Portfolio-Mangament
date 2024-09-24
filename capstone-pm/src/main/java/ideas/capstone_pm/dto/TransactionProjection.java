@@ -1,7 +1,11 @@
 package ideas.capstone_pm.dto;
 
+import java.util.Date;
+
 public interface TransactionProjection {
 
+    Double getTransactionInitialInvestment();
+    Date getTransactionDate();
     UserDTO getUser();
     FundDTO getFund();
 

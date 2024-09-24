@@ -13,7 +13,6 @@ import java.util.Date;
 public class TransactionDTO {
     private int transactionId;
     private double transactionInitialInvestment;
-    private String transactionDuration;
     private Date transactionDate;
     private int fundId;
     private int userId;

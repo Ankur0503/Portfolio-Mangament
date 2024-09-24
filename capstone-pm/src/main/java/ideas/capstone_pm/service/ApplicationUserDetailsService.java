@@ -1,7 +1,7 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.AdminDTO;
-import ideas.capstone_pm.dto.UserDTO;
+import ideas.capstone_pm.dto.UserProjection;
 import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.repository.AdminRepository;
 import ideas.capstone_pm.repository.UserRepository;
@@ -21,7 +21,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (userRepository.existsByUserEmail(username)) {
-            UserDTO user = userRepository.findByUserEmail(username);
+            UserProjection user = userRepository.findByUserEmail(username);
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUserEmail())
                     .password(user.getUserPassword())

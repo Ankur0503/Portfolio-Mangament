@@ -1,6 +1,6 @@
 package ideas.capstone_pm.dto.authentication;
 
-import ideas.capstone_pm.dto.UserDTO;
+import ideas.capstone_pm.dto.UserProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
-    private UserDTO user;
+    private UserProjection user;
     private String jwt;
 }

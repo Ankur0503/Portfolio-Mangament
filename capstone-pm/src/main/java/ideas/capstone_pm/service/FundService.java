@@ -10,7 +10,6 @@ import ideas.capstone_pm.util.FundServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -23,7 +22,7 @@ public class FundService {
     FundServiceUtils fundServiceUtils;
 
     public DashBoardFilters getAllFilters() {
-        return new DashBoardFilters(fundRepository.findAllDistinctFundAMCs(), fundRepository.findAllDistinctFundTypes());
+        return new DashBoardFilters(fundRepository.findAllDistinctFundAMCs(), fundRepository.findAllDistinctFundTypes(), fundRepository.findAllDistinctFundRisks());
     }
 
     public List<DashBoardFundProjection> getAllFunds() {
@@ -61,7 +60,10 @@ public class FundService {
         else if(fundServiceUtils.isFundRisksValid(fundRisks)) {
             return fundRepository.findByFundRiskIn(fundRisks);
         }
-        return fundRepository.findByFundAUMLessThanEqual(fundAUM);
+        else if(fundServiceUtils.isFundAUMValid(fundAUM)) {
+            return fundRepository.findByFundAUMLessThanEqual(fundAUM);
+        }
+        return fundRepository.findBy();
     }
 
     public Double calculateFundValue(Fund fund, Double initialInvestment, Integer years) {

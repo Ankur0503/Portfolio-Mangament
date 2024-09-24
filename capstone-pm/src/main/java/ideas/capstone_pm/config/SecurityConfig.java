@@ -28,8 +28,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/h2-console/**")
                         .disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/register", "/auth/login", "/users/register", "/user/cart/process", "/mutual-funds/fund-calculator", "mutual-funds/user/investment/{fundId}", "/h2-console/**").permitAll()
-                        .requestMatchers("/admin/**", "/users").hasRole("ADMIN")
+                        .requestMatchers("/admin/register", "/auth/login", "/users/register", "/filters", "mutual-funds/filter", "/user/cart/process", "mutual-funds", "/mutual-funds/fund-calculator", "mutual-funds/user/investment/{fundId}", "/h2-console/**").permitAll()
+                        .requestMatchers("/admin/**", "/mutual-funds/add").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                 )
                 .headers(headers -> headers.frameOptions().sameOrigin()

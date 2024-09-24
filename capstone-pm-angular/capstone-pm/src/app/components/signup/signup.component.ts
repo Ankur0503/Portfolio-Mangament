@@ -4,7 +4,7 @@ import { validateEmail } from '../../validators/email-validator';
 import { validatePassword } from '../../validators/password-validator';
 import { validatePhone } from '../../validators/phone-validator';
 import { HttpClient } from '@angular/common/http';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/models/user-model/user';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
@@ -39,8 +39,11 @@ export class SignupComponent {
       userName: this.signupForm.value.name,
       userEmail: this.signupForm.value.email,
       userPassword: this.signupForm.value.password,
-      userPhone: this.signupForm.value.phone
+      userPhone: this.signupForm.value.phone,
+      userId: 0
     }
-    this.authService.register(user);
+    this.authService.register(user).subscribe(response => {
+
+    })
   }
 }

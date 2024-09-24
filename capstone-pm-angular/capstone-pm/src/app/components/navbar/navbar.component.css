@@ -55,3 +55,17 @@
     background-color: #fff; /* Button background on hover */
     color: #4CAF50; /* Text color on hover */
 }
+
+/* Ensure the dropdown menu is positioned absolutely and centered */
+.dropdown-menu {
+    position: absolute; /* Position relative to the nearest positioned ancestor */
+    top: 100%; /* Position it below the toggle element */
+    left: 50%; /* Start from the middle */
+    transform: translateX(-60%); /* Shift it left by half its width */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* Optional: Add some styling for the dropdown items */
+.dropdown-item {
+    text-align: center; /* Center align text in dropdown items */
+}

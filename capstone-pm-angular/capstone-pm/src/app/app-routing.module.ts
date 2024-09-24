@@ -6,14 +6,20 @@ import { ExploreComponent } from './components/explore/explore.component';
 import { InvestmentsComponent } from './components/investments/investments.component';
 import { FundDetailsComponent } from './components/fund-details/fund-details.component';
 import { AuthService } from './services/auth-service/auth.service';
+import { CartComponent } from './components/cart/cart.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const guard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
   // some auth logic
   return inject(AuthService).canActivate()
-   
 }
 
 const routes: Routes = [
+  {
+    path: "",
+    component: HomeComponent
+  },
   {
     path: "signin",
     component: SigninComponent
@@ -33,7 +39,18 @@ const routes: Routes = [
   },
   {
     path: "funds/:fundName",
-    component: FundDetailsComponent
+    component: FundDetailsComponent,
+    canActivate: [guard]
+  },
+  {
+    path: "user/cart",
+    component: CartComponent,
+    canActivate: [guard]
+  },
+  {
+    path: "user/profile",
+    component: ProfileComponent,
+    canActivate: [guard]
   }
 ];
 

@@ -22,13 +22,15 @@ public class CartController {
     }
 
     @GetMapping("/user/cart")
-    public List<CartProjection> getAllCarts(@RequestBody ApplicationUser user) {
+    public List<CartProjection> getAllCarts(@RequestParam Integer userId) {
+        ApplicationUser user = new ApplicationUser();
+        user.setUserId(userId);
         return cartService.getCartsByUser(user);
     }
 
     @DeleteMapping("/user/cart")
-    public void deleteCartByUserAndFund(@RequestBody DeleteCartDTO deleteCartDTO) {
-        cartService.deleteCartByUserAndFund(deleteCartDTO);
+    public void deleteCartByCartId(@RequestParam Integer cartId) {
+        cartService.deleteCartByCartId(cartId);
     }
 
     @GetMapping("/user/cart/total")
@@ -38,7 +40,6 @@ public class CartController {
 
     @PostMapping("/user/cart/process")
     public void proceedToPay(@RequestBody ApplicationUser user) {
-        System.out.println(user);
         cartService.processCart(user);
     }
 }

@@ -1,17 +1,17 @@
 package ideas.capstone_pm.utils;
 
+import ideas.capstone_pm.dto.CartProjection;
 import ideas.capstone_pm.dto.DashBoardFundProjection;
 import ideas.capstone_pm.dto.FundReturnDTO;
 import ideas.capstone_pm.dto.TransactionProjection;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 public class MockUtils {
 
@@ -19,16 +19,16 @@ public class MockUtils {
         DashBoardFundProjection fundProjection = Mockito.mock(DashBoardFundProjection.class);
         DashBoardFundProjection.DashBoardFundReturnProjection returnProjection = Mockito.mock(DashBoardFundProjection.DashBoardFundReturnProjection.class);
 
-        Mockito.when(returnProjection.getFundReturn1Year()).thenReturn(return1Year);
-        Mockito.when(returnProjection.getFundReturn3Year()).thenReturn(return3Year);
-        Mockito.when(returnProjection.getFundReturn5Year()).thenReturn(return5Year);
+        when(returnProjection.getFundReturn1Year()).thenReturn(return1Year);
+        when(returnProjection.getFundReturn3Year()).thenReturn(return3Year);
+        when(returnProjection.getFundReturn5Year()).thenReturn(return5Year);
 
-        Mockito.when(fundProjection.getFundId()).thenReturn(fundId);
-        Mockito.when(fundProjection.getFundName()).thenReturn(fundName);
-        Mockito.when(fundProjection.getFundRisk()).thenReturn(fundRisk);
-        Mockito.when(fundProjection.getFundType()).thenReturn(fundType);
-        Mockito.when(fundProjection.getFundRating()).thenReturn(fundRating);
-        Mockito.when(fundProjection.getFundReturn()).thenReturn(returnProjection);
+        when(fundProjection.getFundId()).thenReturn(fundId);
+        when(fundProjection.getFundName()).thenReturn(fundName);
+        when(fundProjection.getFundRisk()).thenReturn(fundRisk);
+        when(fundProjection.getFundType()).thenReturn(fundType);
+        when(fundProjection.getFundRating()).thenReturn(fundRating);
+        when(fundProjection.getFundReturn()).thenReturn(returnProjection);
 
         return fundProjection;
     }
@@ -57,15 +57,16 @@ public class MockUtils {
         TransactionProjection.UserDTO userDTOProjection = Mockito.mock(TransactionProjection.UserDTO.class);
         TransactionProjection.FundDTO fundDTOProjection = Mockito.mock(TransactionProjection.FundDTO.class);
 
-        Mockito.when(userDTOProjection.getUserId()).thenReturn(userId);
-        Mockito.when(userDTOProjection.getUserName()).thenReturn(userName);
+        when(userDTOProjection.getUserId()).thenReturn(userId);
+        when(userDTOProjection.getUserName()).thenReturn(userName);
 
-        Mockito.when(fundDTOProjection.getFundId()).thenReturn(fundId);
-        Mockito.when(fundDTOProjection.getFundName()).thenReturn(fundName);
-        Mockito.when(fundDTOProjection.getFundType()).thenReturn(fundType);
+        when(fundDTOProjection.getFundId()).thenReturn(fundId);
+        when(fundDTOProjection.getFundName()).thenReturn(fundName);
+        when(fundDTOProjection.getFundType()).thenReturn(fundType);
 
-        Mockito.when(transactionProjection.getUser()).thenReturn(userDTOProjection);
-        Mockito.when(transactionProjection.getFund()).thenReturn(fundDTOProjection);
+        when(transactionProjection.getUser()).thenReturn(userDTOProjection);
+        when(transactionProjection.getFund()).thenReturn(fundDTOProjection);
+        when(transactionProjection.getTransactionInitialInvestment()).thenReturn(10000.00);
 
         return transactionProjection;
     }
@@ -79,6 +80,7 @@ public class MockUtils {
 
         assertEquals(transactionProjection.getUser(), userDTOProjection);
         assertEquals(transactionProjection.getFund(), fundDTOProjection);
+        assertEquals(transactionProjection.getTransactionInitialInvestment(), 10000.00);
 
         assertEquals(userDTOProjection.getUserId(), 1);
         assertEquals(userDTOProjection.getUserName(), "John Doe");
@@ -95,17 +97,53 @@ public class MockUtils {
         FundReturnDTO fundReturnDTO = Mockito.mock(FundReturnDTO.class);
         FundReturnDTO.FundDTO fundDTO = Mockito.mock(FundReturnDTO.FundDTO.class);
 
-        Mockito.when(fundDTO.getFundId()).thenReturn(fundId);
-        Mockito.when(fundDTO.getFundName()).thenReturn(fundName);
-        Mockito.when(fundDTO.getFundType()).thenReturn(fundType);
+        when(fundDTO.getFundId()).thenReturn(fundId);
+        when(fundDTO.getFundName()).thenReturn(fundName);
+        when(fundDTO.getFundType()).thenReturn(fundType);
 
-        Mockito.when(fundReturnDTO.getFundReturn1Month()).thenReturn(fundReturn1Month);
-        Mockito.when(fundReturnDTO.getFundReturn1Year()).thenReturn(fundReturn1Year);
-        Mockito.when(fundReturnDTO.getFundReturn3Year()).thenReturn(fundReturn3Year);
-        Mockito.when(fundReturnDTO.getFundReturn5Year()).thenReturn(fundReturn5Year);
-        Mockito.when(fundReturnDTO.getFundReturnTotal()).thenReturn(fundReturnTotal);
-        Mockito.when(fundReturnDTO.getFund()).thenReturn(fundDTO);
+        when(fundReturnDTO.getFundReturn1Month()).thenReturn(fundReturn1Month);
+        when(fundReturnDTO.getFundReturn1Year()).thenReturn(fundReturn1Year);
+        when(fundReturnDTO.getFundReturn3Year()).thenReturn(fundReturn3Year);
+        when(fundReturnDTO.getFundReturn5Year()).thenReturn(fundReturn5Year);
+        when(fundReturnDTO.getFundReturnTotal()).thenReturn(fundReturnTotal);
+        when(fundReturnDTO.getFund()).thenReturn(fundDTO);
 
         return fundReturnDTO;
+    }
+
+    public static CartProjection mockCartProjection(Integer cartId, Double plannedInvestment, Integer fundId, String fundName) {
+        CartProjection mockedCartProjection = Mockito.mock(CartProjection.class);
+        CartProjection.CartItemsProjection mockedCartItemsProjection = Mockito.mock(CartProjection.CartItemsProjection.class);
+
+        when(mockedCartItemsProjection.getFundId()).thenReturn(fundId);
+        when(mockedCartItemsProjection.getFundName()).thenReturn(fundName);
+
+        when(mockedCartProjection.getCartId()).thenReturn(cartId);
+        when(mockedCartProjection.getPlannedInvestment()).thenReturn(plannedInvestment);
+        when(mockedCartProjection.getFund()).thenReturn(mockedCartItemsProjection);
+
+        return mockedCartProjection;
+    }
+
+    public static List<CartProjection> mockCartProjectionList() {
+        Integer cartId = 1;
+        Double plannedInvestment = 5000.00;
+        Integer fundId = 1001;
+        String fundName = "SBI BlueChip Fund";
+
+        CartProjection mockedCartProjection = mockCartProjection(cartId, plannedInvestment, fundId, fundName);
+
+        assertNotNull(mockedCartProjection);
+        assertEquals(cartId, mockedCartProjection.getCartId());
+        assertEquals(plannedInvestment, mockedCartProjection.getPlannedInvestment());
+
+        CartProjection.CartItemsProjection mockedCartItemsProjection = mockedCartProjection.getFund();
+        assertNotNull(mockedCartItemsProjection);
+        assertEquals(fundId, mockedCartItemsProjection.getFundId());
+        assertEquals(fundName, mockedCartItemsProjection.getFundName());
+
+        List<CartProjection> mockedCartProjectionList = new ArrayList<>();
+        mockedCartProjectionList.add(mockedCartProjection);
+        return mockedCartProjectionList;
     }
 }

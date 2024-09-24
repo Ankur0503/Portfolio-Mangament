@@ -5,6 +5,7 @@ public interface PeerFundsDTO {
     String getFundName();
     String getFundType();
     Double getFundAUM();
+    Double getFundRating();
     FundReturnDTO getFundReturn();
 
     interface FundReturnDTO {

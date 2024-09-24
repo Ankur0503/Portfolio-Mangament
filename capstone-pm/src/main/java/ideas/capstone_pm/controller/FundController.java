@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class FundController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class FundController {
         return fundService.getFundById(fundId);
     }
 
-    @PostMapping("mutual-funds")
+    @PostMapping("mutual-funds/add")
     public Fund addFund(@RequestBody FundDescriptionDTO fundDTO) {
         return fundService.addFund(fundDTO);
     }

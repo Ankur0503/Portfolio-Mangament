@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FundServiceTest {
+
+    private static final String FUND_AMC_SBI = "SBI Mutual Fund";
+    private static final String FUND_AMC_AXIS = "Axis Mutual Fund";
+    private static final String FUND_AMC_HDFC = "HDFC Mutual Fund";
+
+    private static final String FUND_RISK_HIGH = "High";
+    private static final String FUND_RISK_LOW = "Low";
+
     @Mock
     FundRepository fundRepository;
     @Mock
@@ -41,47 +48,39 @@ public class FundServiceTest {
     }
 
     @Test
-    void testGetAllFilters() {
-        List<String> mockFundAMCs = Arrays.asList("AMC1", "AMC2", "AMC3");
-        List<String> mockFundTypes = Arrays.asList("Type1", "Type2");
+    void getAllFilters() {
+        List<String> mockFundAMCs = createMockFundAMCs();
+        List<String> mockFundRisks = createMockFundRisks();
 
         when(fundRepository.findAllDistinctFundAMCs()).thenReturn(mockFundAMCs);
-        when(fundRepository.findAllDistinctFundTypes()).thenReturn(mockFundTypes);
+        when(fundRepository.findAllDistinctFundRisks()).thenReturn(mockFundRisks);
 
         DashBoardFilters actualFilters = fundService.getAllFilters();
 
         assertNotNull(actualFilters);
         assertEquals(mockFundAMCs, actualFilters.getFundAMCs());
-        assertEquals(mockFundTypes, actualFilters.getFundTypes());
+        assertEquals(mockFundRisks, actualFilters.getFundRisks());
     }
 
     @Test
-    void testGetAllFunds() {
-        List<DashBoardFundProjection> mockFundProjections = MockUtils.mockFundProjectionsList();
-
-        when(fundRepository.findBy()).thenReturn(mockFundProjections);
+    void getAllFunds() {
+        List<DashBoardFundProjection> expectedFunds = MockUtils.mockFundProjectionsList();
+        when(fundRepository.findBy()).thenReturn(expectedFunds);
 
         List<DashBoardFundProjection> actualFunds = fundService.getAllFunds();
 
         assertNotNull(actualFunds);
-        assertEquals(mockFundProjections.size(), actualFunds.size());
-        assertEquals(mockFundProjections.get(0).getFundId(), actualFunds.get(0).getFundId());
-        assertEquals(mockFundProjections.get(0).getFundName(), actualFunds.get(0).getFundName());
-        assertEquals(mockFundProjections.get(0).getFundRisk(), actualFunds.get(0).getFundRisk());
-        assertEquals(mockFundProjections.get(0).getFundType(), actualFunds.get(0).getFundType());
-        assertEquals(mockFundProjections.get(0).getFundRating(), actualFunds.get(0).getFundRating());
-        assertEquals(mockFundProjections.get(0).getFundReturn(), actualFunds.get(0).getFundReturn());
+        assertEquals(expectedFunds.size(), actualFunds.size());
 
-        assertEquals(mockFundProjections.get(0).getFundReturn().getFundReturn1Year(), actualFunds.get(0).getFundReturn().getFundReturn1Year());
-        assertEquals(mockFundProjections.get(0).getFundReturn().getFundReturn3Year(), actualFunds.get(0).getFundReturn().getFundReturn3Year());
-        assertEquals(mockFundProjections.get(0).getFundReturn().getFundReturn5Year(), actualFunds.get(0).getFundReturn().getFundReturn5Year());
+        for (int i = 0; i < expectedFunds.size(); i++) {
+            assertFundEquals(expectedFunds.get(i), actualFunds.get(i));
+        }
 
-        // Verify that the repository method was called exactly once
         verify(fundRepository, times(1)).findBy();
     }
 
     @Test
-    void testGetFundById() {
+    void getFundById() {
         Fund expectedFund = buildFund();
         FundDescriptionDTO expectedFundDescriptionDTO = buildFundDescriptionDTO();
 
@@ -96,7 +95,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void testAddFund() {
+    void addFund() {
         Fund expectedFund = buildFund();
         FundDescriptionDTO expectedFundDescriptionDTO = buildFundDescriptionDTO();
 
@@ -109,79 +108,47 @@ public class FundServiceTest {
     }
 
     @Test
-    void testGetFundsByFilter() {
-        List<String> validFundAMCs = List.of("AMC1", "AMC2");
-        List<String> validFundRisks = List.of("High", "Low");
-        double validFundAUM = 10000.00;
+    void getFundsByFilter() {
+        List<String> validFundAMCs = createMockFundAMCs();
+        List<String> validFundRisks = createMockFundRisks();
+        double validFundAUM = 10_000.00;
+
         List<String> invalidFundAMCs = List.of();
         List<String> invalidFundRisks = List.of();
         double invalidFundAUM = 0.00;
 
         List<DashBoardFundProjection> mockFunds = MockUtils.mockFundProjectionsList();
+        mockFundRepositoryResponses(validFundAMCs, validFundRisks, validFundAUM, mockFunds);
 
-        setUpMockRepository(validFundAMCs, validFundRisks, validFundAUM, mockFunds);
+        setUpValidations(validFundAMCs, validFundRisks, validFundAUM);
 
-        when(fundServiceUtils.isFundAMCsValid(validFundAMCs)).thenReturn(true);
-        when(fundServiceUtils.isFundRisksValid(validFundRisks)).thenReturn(true);
-        when(fundServiceUtils.isFundAUMValid(validFundAUM)).thenReturn(true);
-        when(fundServiceUtils.isFundAMCsValid(invalidFundAMCs)).thenReturn(false);
-        when(fundServiceUtils.isFundRisksValid(invalidFundRisks)).thenReturn(false);
-        when(fundServiceUtils.isFundAUMValid(invalidFundAUM)).thenReturn(false);
+        assertFundsByFilter(validFundAMCs, validFundRisks, validFundAUM, mockFunds);
 
-        List<DashBoardFundProjection> actualFunds = fundService.getFundsByFilter(validFundAMCs, validFundRisks, validFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(validFundAMCs, validFundRisks, invalidFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(validFundAMCs, invalidFundRisks, validFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(invalidFundAMCs, validFundRisks, validFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(validFundAMCs, invalidFundRisks, invalidFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(invalidFundAMCs, validFundRisks, invalidFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
-
-        actualFunds = fundService.getFundsByFilter(invalidFundAMCs, invalidFundRisks, validFundAUM);
-        assertNotNull(actualFunds);
-        assertEquals(mockFunds, actualFunds);
+        assertFundsByFilter(validFundAMCs, validFundRisks, invalidFundAUM, mockFunds);
+        assertFundsByFilter(validFundAMCs, invalidFundRisks, validFundAUM, mockFunds);
+        assertFundsByFilter(invalidFundAMCs, validFundRisks, validFundAUM, mockFunds);
+        assertFundsByFilter(validFundAMCs, invalidFundRisks, invalidFundAUM, mockFunds);
+        assertFundsByFilter(invalidFundAMCs, validFundRisks, invalidFundAUM, mockFunds);
+        assertFundsByFilter(invalidFundAMCs, invalidFundRisks, validFundAUM, mockFunds);
     }
 
     @Test
-    void testCalculateFundValue() {
+    void calculateFundValue() {
         FundReturnDTO mockedFundReturnDTO = MockUtils.mockFundReturnProjection(2.0, 12.5, 38.7, 75.4, 250.4, 1, "SBI BlueChip Fund", "Equity");
-        FundReturnDTO.FundDTO mockedFundDTO = mockedFundReturnDTO.getFund();
         Fund mockedFund = buildFund();
         Double expectedFundValue = 1660152.3524741023;
 
         when(fundReturnRepository.findByFund(any(Fund.class))).thenReturn(mockedFundReturnDTO);
+
         Double actualFundValue = fundService.calculateFundValue(mockedFund, 100000.0, 5);
+
         assertNotNull(actualFundValue);
         assertEquals(expectedFundValue, actualFundValue);
 
-        assertEquals(mockedFundReturnDTO.getFundReturn1Month(), 2.0);
-        assertEquals(mockedFundReturnDTO.getFundReturn1Year(), 12.5);
-        assertEquals(mockedFundReturnDTO.getFundReturn3Year(), 38.7);
-        assertEquals(mockedFundReturnDTO.getFundReturn5Year(), 75.4);
-        assertEquals(mockedFundReturnDTO.getFundReturnTotal(), 250.4);
-        assertEquals(mockedFundReturnDTO.getFund(), mockedFundDTO);
-
-        assertEquals(mockedFundDTO.getFundId(), 1);
-        assertEquals(mockedFundDTO.getFundName(), "SBI BlueChip Fund");
-        assertEquals(mockedFundDTO.getFundType(), "Equity");
+        assertFundReturnDTO(mockedFundReturnDTO);
     }
 
-    private void setUpMockRepository(List<String> validFundAMCs, List<String> validFundRisks, double validFundAUM, List<DashBoardFundProjection> mockFunds) {
+    private void mockFundRepositoryResponses(List<String> validFundAMCs, List<String> validFundRisks, double validFundAUM, List<DashBoardFundProjection> mockFunds) {
         when(fundRepository.findByFundAMCInAndFundRiskInAndFundAUMLessThanEqual(validFundAMCs, validFundRisks, validFundAUM)).thenReturn(mockFunds);
         when(fundRepository.findByFundAMCInAndFundRiskIn(validFundAMCs, validFundRisks)).thenReturn(mockFunds);
         when(fundRepository.findByFundAMCInAndFundAUMLessThanEqual(validFundAMCs, validFundAUM)).thenReturn(mockFunds);
@@ -197,5 +164,46 @@ public class FundServiceTest {
 
     private Fund buildFund() {
         return new Fund(1, "Global Equity Fund", "XYZ Asset Management", "Medium", "Equity", 250.50, 95.75, "Alice Johnson", "A diversified global equity fund focusing on growth stocks.", 4.5, null, null, null);
+    }
+
+    private List<String> createMockFundAMCs() {
+        return Arrays.asList(FUND_AMC_HDFC, FUND_AMC_AXIS, FUND_AMC_SBI);
+    }
+
+    private List<String> createMockFundRisks() {
+        return Arrays.asList(FUND_RISK_HIGH, FUND_RISK_LOW);
+    }
+
+    private void assertFundEquals(DashBoardFundProjection expected, DashBoardFundProjection actual) {
+        assertEquals(expected.getFundId(), actual.getFundId());
+        assertEquals(expected.getFundName(), actual.getFundName());
+        assertEquals(expected.getFundRisk(), actual.getFundRisk());
+        assertEquals(expected.getFundType(), actual.getFundType());
+        assertEquals(expected.getFundRating(), actual.getFundRating());
+    }
+
+    private void setUpValidations(List<String> fundAMCs, List<String> fundRisks, double fundAUM) {
+        when(fundServiceUtils.isFundAMCsValid(fundAMCs)).thenReturn(true);
+        when(fundServiceUtils.isFundRisksValid(fundRisks)).thenReturn(true);
+        when(fundServiceUtils.isFundAUMValid(fundAUM)).thenReturn(true);
+    }
+
+    private void assertFundsByFilter(List<String> fundAMCs, List<String> risks, double aum, List<DashBoardFundProjection> expectedFunds) {
+        List<DashBoardFundProjection> actualFunds = fundService.getFundsByFilter(fundAMCs, risks, aum);
+        assertNotNull(actualFunds);
+        assertEquals(expectedFunds, actualFunds);
+    }
+
+    private void assertFundReturnDTO(FundReturnDTO fundReturnDTO) {
+        assertEquals(2.0, fundReturnDTO.getFundReturn1Month());
+        assertEquals(12.5, fundReturnDTO.getFundReturn1Year());
+        assertEquals(38.7, fundReturnDTO.getFundReturn3Year());
+        assertEquals(75.4, fundReturnDTO.getFundReturn5Year());
+        assertEquals(250.4, fundReturnDTO.getFundReturnTotal());
+
+        FundReturnDTO.FundDTO fundDTO = fundReturnDTO.getFund();
+        assertEquals(1, fundDTO.getFundId());
+        assertEquals("SBI BlueChip Fund", fundDTO.getFundName());
+        assertEquals("Equity", fundDTO.getFundType());
     }
 }

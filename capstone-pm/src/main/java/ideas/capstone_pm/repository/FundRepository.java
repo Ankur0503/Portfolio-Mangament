@@ -21,6 +21,8 @@ public interface FundRepository extends CrudRepository<Fund, Integer> {
     List<String> findAllDistinctFundAMCs();
     @Query(value = "select distinct f.fund_Type from Fund f", nativeQuery = true)
     List<String> findAllDistinctFundTypes();
+    @Query(value = "select distinct f.fund_Risk from Fund f", nativeQuery = true)
+    List<String> findAllDistinctFundRisks();
 
     List<PeerFundsDTO> findByFundTypeAndFundIdNotIn(String fundType, List<Integer> fundIds);
     List<DashBoardFundProjection> findBy();

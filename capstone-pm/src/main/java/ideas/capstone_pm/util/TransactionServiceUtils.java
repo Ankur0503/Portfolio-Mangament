@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionServiceUtils {
     public TransactionDTO buildTransactionDTO(Transaction transaction) {
-        return new TransactionDTO(transaction.getTransactionId(), transaction.getTransactionInitialInvestment(), transaction.getTransactionDuration(), transaction.getTransactionDate(), transaction.getFund().getFundId(), transaction.getUser().getUserId());
+        return new TransactionDTO(transaction.getTransactionId(), transaction.getTransactionInitialInvestment(), transaction.getTransactionDate(), transaction.getFund().getFundId(), transaction.getUser().getUserId());
     }
 }

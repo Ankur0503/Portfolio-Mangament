@@ -1,1 +1,39 @@
-<p>investments works!</p>
+<div class="investment-container">
+  <div class="summary-card">
+    <div class="card-body">
+      <h5 class="card-title">Investment Summary</h5>
+      <p class="card-text">
+        <span class="fw-bold">Invested Value:</span> ₹{{ investedValue }}
+      </p>
+      <p class="card-text">
+        <span class="fw-bold">Total Returns:</span> ₹{{ totalReturns }} ({{ totalReturnsPercentage }}%)
+      </p>
+      <p class="card-text">
+        <span class="fw-bold">Current Returns:</span> ₹{{ currentReturns }} ({{ currentReturnsPercentage }}%)
+      </p>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="cards-container">
+      <div *ngIf="userFunds.length === 0" class="no-results text-center">
+        <p>No funds available at the moment. Try changing or clearing the Filters</p>
+      </div>
+  
+      <div class="card" *ngFor="let userFund of userFunds">
+        <div class="card-header">
+          <h3>{{ userFund.transactionProjection.fund.fundName }}</h3>
+        </div>
+        <div class="card-body">
+          <p><strong>Amount</strong> ₹{{ userFund.transactionProjection.transactionInitialInvestment }}</p>
+          <p><strong>Category</strong> {{ userFund.transactionProjection.fund.fundType }}</p>
+          <p><strong>Current Value</strong> ₹{{ userFund.currentValue | number }}</p>
+          <p><strong>Transaction Date</strong> {{ userFund.transactionProjection.transactionDate | date: 'dd MMM yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<app-footer></app-footer>

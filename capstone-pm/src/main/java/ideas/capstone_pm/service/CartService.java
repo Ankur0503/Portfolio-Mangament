@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -34,9 +35,11 @@ public class CartService {
         return cartRepository.findByUser(user);
     }
 
-    public void deleteCartByUserAndFund(DeleteCartDTO deleteCartDTO) {
-        CartProjection cartProjection = cartRepository.findByFundAndUser(deleteCartDTO.getFund(), deleteCartDTO.getUser());
-        cartRepository.deleteById(cartProjection.getCartId());
+    public void deleteCartByCartId(Integer cartId) {
+        Optional<Cart> cart = cartRepository.findById(cartId);
+        if (cart.isPresent()) {
+            cartRepository.deleteById(cartId);
+        }
     }
 
     public double computeTotalAmountInCart(ApplicationUser user) {
@@ -55,7 +58,6 @@ public class CartService {
             transaction.setUser(user);
             transaction.setTransactionInitialInvestment(cartItem.getPlannedInvestment());
             transaction.setTransactionDate(new Date());
-            transaction.setTransactionDuration("3 Years");
             transactionRepository.save(transaction);
         }
 

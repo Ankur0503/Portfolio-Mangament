@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth-service/auth.service';
-import { UserCredentials } from './models/user-credentials';
+import { UserCredentials } from './models/user-model/user-credentials';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,22 +13,26 @@ export class AppComponent {
   title = 'capstone-pm';
 
   constructor(public authService: AuthService, public router: Router) {
-
+    
   }
 
   ngOnInit() {
     var userObj = localStorage.getItem('currentUser')
-
-    if (userObj !== null) {
-      var myUserDetails = JSON.parse(userObj)
-      var userCreds: UserCredentials = new UserCredentials()
-      userCreds.email = myUserDetails.user.userEmail
-      userCreds.password = myUserDetails.password
-      console.log(userCreds)
-      this.authService.loginUser(userCreds)
+    if(userObj !== null) {
+      var jwt = JSON.parse(userObj)
+      this.authService.getLoggedInUser().subscribe(response => {
+        this.authService.userProfile.user = response.data
+        this.authService.userProfile.jwt = jwt
+        this.authService.isLoggedIn = true
+        this.router.navigateByUrl("/")
+      }),
+      catchError(error => {
+        return throwError(error)
+      })
     }
-    else
+    else {
       this.router.navigateByUrl("/signin")
+    }
   }
 
 }

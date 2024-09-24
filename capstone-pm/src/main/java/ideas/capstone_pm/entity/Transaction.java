@@ -19,9 +19,6 @@ public class Transaction {
     private int transactionId;
     @Column(nullable = false)
     private double transactionInitialInvestment;
-    @Column(nullable = false)
-    private String transactionDuration;
-    @Column(nullable = false)
     private Date transactionDate;
 
     @ManyToOne

@@ -1,10 +1,13 @@
 package ideas.capstone_pm.transactionservice;
 
+import ideas.capstone_pm.dto.FundReturnDTO;
 import ideas.capstone_pm.dto.TransactionDTO;
 import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.dto.TransactionResponseDTO;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
+import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
 import ideas.capstone_pm.service.TransactionService;
 import ideas.capstone_pm.util.TransactionServiceUtils;
@@ -27,10 +30,35 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
+
+    private static final double FUND_RETURN_1_MONTH = 2.0;
+    private static final double FUND_RETURN_1_YEAR = 12.5;
+    private static final double FUND_RETURN_3_YEAR = 38.7;
+    private static final double FUND_RETURN_5_YEAR = 75.4;
+    private static final double FUND_RETURN_TOTAL = 250.4;
+    private static final int FUND_ID = 1;
+    private static final String FUND_NAME = "SBI BlueChip Fund";
+    private static final String FUND_TYPE = "Equity";
+    private static final String USER_NAME = "John Doe";
+    private static final String USER_EMAIL = "johndoe@example.com";
+    private static final String USER_PASSWORD = "password123";
+    private static final String USER_PHONE = "1234567890";
+    private static final int USER_AGE = 30;
+    private static final String USER_ROLE = "USER";
+
+    private static final int USER_ID = 1;
+    private static final int TRANSACTION_ID = 1;
+    private static final double TRANSACTION_AMOUNT = 5000.00;
+    private static final int USER_ID_FOR_TRANSACTION = 2001; // Example user ID, adjust as necessary
+    private static final Date TRANSACTION_DATE = new Date(); // Adjust as needed for test stability
+
+
     @Mock
     TransactionRepository transactionRepository;
     @Mock
     TransactionServiceUtils transactionServiceUtils;
+    @Mock
+    FundReturnRepository fundReturnRepository;
     @InjectMocks
     TransactionService transactionService;
 
@@ -41,13 +69,17 @@ public class TransactionServiceTest {
 
     @Test
     void testGetFundByUser() {
+        ApplicationUser user = createUser();
         List<TransactionProjection> mockTransactions = MockUtils.mockTransactionProjectionsList();
+        FundReturnDTO mockedFundReturnDTO = createMockFundReturnDTO();
 
-        ApplicationUser user = new ApplicationUser(1, "John Doe", "johndoe@example.com", "password123", "1234567890", 30, "USER", null);
         when(transactionRepository.findByUser(user)).thenReturn(mockTransactions);
+        when(fundReturnRepository.findByFund(any(Fund.class))).thenReturn(mockedFundReturnDTO);
 
-        List<TransactionProjection> actualTransactions = transactionService.getFundsByUser(user);
+        List<TransactionResponseDTO> actualTransactions = transactionService.getFundsByUser(user);
+
         assertNotNull(actualTransactions);
+        assertFundReturnDTO(mockedFundReturnDTO);
     }
 
     @Test
@@ -56,35 +88,71 @@ public class TransactionServiceTest {
         Transaction expectedTransaction = buildTransaction();
         TransactionDTO expectedTransactionDTO = buildTransactionDTO();
 
-        when(transactionRepository.findByUserAndFund(any(ApplicationUser.class), any(Fund.class))).thenReturn(expectedTransaction);
-        when(transactionServiceUtils.buildTransactionDTO(expectedTransaction)).thenReturn(expectedTransactionDTO);
+        mockTransactionFundByUserAndFund(expectedTransaction);
+        mockTransactionServiceUtilsBuildTransactionDTO(expectedTransaction, expectedTransactionDTO);
 
         TransactionDTO actualTransactionDTO = transactionService.getTransactionByUserAndFund(user, 1);
+
         assertNotNull(actualTransactionDTO);
         assertEquals(expectedTransactionDTO, actualTransactionDTO);
     }
 
     @Test
     void testAddTransaction() {
+        ApplicationUser user = buildApplicationUser();
         Transaction expectedTransaction = buildTransaction();
         TransactionDTO expectedTransactionDTO = buildTransactionDTO();
-        when(transactionRepository.save(any(Transaction.class))).thenReturn(expectedTransaction);
-        when(transactionServiceUtils.buildTransactionDTO(expectedTransaction)).thenReturn(expectedTransactionDTO);
+
+        mockTransactionSave(expectedTransaction);
+        mockTransactionServiceUtilsBuildTransactionDTO(expectedTransaction, expectedTransactionDTO);
 
         TransactionDTO actualTransactionDTO = transactionService.addTransaction(expectedTransaction);
+
         assertNotNull(actualTransactionDTO);
         assertEquals(expectedTransactionDTO, actualTransactionDTO);
     }
 
     private TransactionDTO buildTransactionDTO() {
-        return  new TransactionDTO(1, 5000.00, "5 years", new Date(), 1001, 2001);
+        return new TransactionDTO(TRANSACTION_ID, TRANSACTION_AMOUNT, TRANSACTION_DATE, FUND_ID, USER_ID_FOR_TRANSACTION);
     }
 
     private ApplicationUser buildApplicationUser() {
-        return new ApplicationUser(1, "John Doe", "johndoe@example.com", "password123", "1234567890", 30, "USER", null);
+        return new ApplicationUser(USER_ID, USER_NAME, USER_EMAIL, USER_PASSWORD, USER_PHONE, USER_AGE, USER_ROLE, null, null);
     }
 
     private Transaction buildTransaction() {
-        return new Transaction(1, 5000.00, "5 years", new Date(), null, null);
+        return new Transaction(TRANSACTION_ID, TRANSACTION_AMOUNT, TRANSACTION_DATE, null, null);
+    }
+
+    private ApplicationUser createUser() {
+        return new ApplicationUser(1, USER_NAME, USER_EMAIL, USER_PASSWORD, USER_PHONE, USER_AGE, USER_ROLE, null, null);
+    }
+
+    private FundReturnDTO createMockFundReturnDTO() {
+        return MockUtils.mockFundReturnProjection(FUND_RETURN_1_MONTH, FUND_RETURN_1_YEAR, FUND_RETURN_3_YEAR, FUND_RETURN_5_YEAR, FUND_RETURN_TOTAL, FUND_ID, FUND_NAME, FUND_TYPE);
+    }
+
+    private void mockTransactionFundByUserAndFund(Transaction expectedTransaction) {
+        when(transactionRepository.findByUserAndFund(any(ApplicationUser.class), any(Fund.class))).thenReturn(expectedTransaction);
+    }
+
+    private void mockTransactionServiceUtilsBuildTransactionDTO(Transaction expectedTransaction, TransactionDTO expectedTransactionDTO) {
+        when(transactionServiceUtils.buildTransactionDTO(expectedTransaction)).thenReturn(expectedTransactionDTO);
+    }
+
+    private void mockTransactionSave(Transaction expectedTransaction) {
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(expectedTransaction);
+    }
+
+    private void assertFundReturnDTO(FundReturnDTO fundReturnDTO) {
+        FundReturnDTO.FundDTO fundDTO = fundReturnDTO.getFund();
+        assertEquals(FUND_RETURN_1_MONTH, fundReturnDTO.getFundReturn1Month());
+        assertEquals(FUND_RETURN_1_YEAR, fundReturnDTO.getFundReturn1Year());
+        assertEquals(FUND_RETURN_3_YEAR, fundReturnDTO.getFundReturn3Year());
+        assertEquals(FUND_RETURN_5_YEAR, fundReturnDTO.getFundReturn5Year());
+        assertEquals(FUND_RETURN_TOTAL, fundReturnDTO.getFundReturnTotal());
+        assertEquals(FUND_ID, fundDTO.getFundId());
+        assertEquals(FUND_NAME, fundDTO.getFundName());
+        assertEquals(FUND_TYPE, fundDTO.getFundType());
     }
 }
