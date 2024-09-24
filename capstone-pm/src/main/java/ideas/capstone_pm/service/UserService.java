@@ -51,10 +51,26 @@ public class UserService {
     }
 
     public UserProjection getCurrentUser(String authorizationHeader) {
-        String jwt = authorizationHeader.substring(7);
-        String username = jwtUtil.extractUsername(jwt);
-        return userRepository.findByUserEmail(username);
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                throw new IllegalArgumentException("Invalid authorization header.");
+            }
+
+            String jwt = authorizationHeader.substring(7);
+            String username = jwtUtil.extractUsername(jwt);
+
+            UserProjection user = userRepository.findByUserEmail(username);
+
+            if (user == null) {
+                throw new EmailNotFound();
+            }
+
+            return user;
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while retrieving the current user.");
+        }
     }
+
 
     public ApplicationUser updateUser(UserDTO userDTO) {
         Optional<ApplicationUser> applicationUser = userRepository.findById(userDTO.getUserId());

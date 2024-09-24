@@ -19,7 +19,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDTO loginRequest, HttpServletResponse response) throws AuthenticationException {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDTO loginRequest) throws AuthenticationException {
         try {
             AuthenticationResponse authenticationResponse = authService.authenticate(loginRequest);
             return ResponseEntity.ok(authenticationResponse);

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -28,22 +29,10 @@ public class TransactionService {
 
     public List<TransactionResponseDTO> getFundsByUser(ApplicationUser user) {
         List<TransactionProjection> transactionProjections = transactionRepository.findByUser(user);
-        List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
 
-        for (TransactionProjection transactionProjection: transactionProjections) {
-            TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();
-            transactionResponseDTO.setTransactionProjection(transactionProjection);
-
-            Fund fund = new Fund();
-            fund.setFundId(transactionProjection.getFund().getFundId());
-            FundReturnDTO fundReturnDTO = fundReturnRepository.findByFund(fund);
-
-            Double currentValue = transactionProjection.getTransactionInitialInvestment() * (1 + (fundReturnDTO.getFundReturnTotal() / 100));
-            transactionResponseDTO.setCurrentValue(currentValue);
-
-            transactionResponseDTOS.add(transactionResponseDTO);
-        }
-        return transactionResponseDTOS;
+        return transactionProjections.stream()
+                .map(this::createTransactionResponseDTO)
+                .collect(Collectors.toList());
     }
 
     public TransactionDTO getTransactionByUserAndFund(ApplicationUser user, Integer fundId) {
@@ -58,5 +47,23 @@ public class TransactionService {
     public TransactionDTO addTransaction(Transaction transaction) {
         transaction.setTransactionDate(new Date());
         return transactionServiceUtils.buildTransactionDTO(transactionRepository.save(transaction));
+    }
+
+    private TransactionResponseDTO createTransactionResponseDTO(TransactionProjection transactionProjection) {
+        Fund fund = new Fund();
+        fund.setFundId(transactionProjection.getFund().getFundId());
+
+        FundReturnDTO fundReturnDTO = fundReturnRepository.findByFund(fund);
+        Double currentValue = calculateCurrentValue(transactionProjection.getTransactionInitialInvestment(), fundReturnDTO.getFundReturnTotal());
+
+        TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();
+        transactionResponseDTO.setTransactionProjection(transactionProjection);
+        transactionResponseDTO.setCurrentValue(currentValue);
+
+        return transactionResponseDTO;
+    }
+
+    private Double calculateCurrentValue(Double initialInvestment, Double fundReturnTotal) {
+        return initialInvestment * (1 + (fundReturnTotal / 100));
     }
 }

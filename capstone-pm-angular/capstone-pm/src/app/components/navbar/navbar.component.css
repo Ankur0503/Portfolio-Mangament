@@ -69,3 +69,9 @@
 .dropdown-item {
     text-align: center; /* Center align text in dropdown items */
 }
+
+.dropdown-item.active, .dropdown-item:active {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color:#4CAF50;
+}

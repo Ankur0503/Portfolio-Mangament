@@ -6,6 +6,7 @@ import { validatePhone } from '../../validators/phone-validator';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/models/user-model/user';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +21,7 @@ export class SignupComponent {
 
   signupForm: FormGroup
 
-  constructor(public http: HttpClient, public authService: AuthService) {
+  constructor(public http: HttpClient, public authService: AuthService, public router: Router) {
     this.name = new FormControl('', [Validators.required])
     this.email = new FormControl('', [Validators.required, validateEmail()])
     this.password = new FormControl('', [Validators.required, Validators.minLength(8), validatePassword()])
@@ -43,7 +44,10 @@ export class SignupComponent {
       userId: 0
     }
     this.authService.register(user).subscribe(response => {
-
+      this.router.navigateByUrl("/signin")
+    },
+    err => {
+      console.error('SignUp Failed', err)
     })
   }
 }

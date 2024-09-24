@@ -82,7 +82,6 @@ export class AuthService {
         return throwError(error)
       })
     )
-
   }
 
   getRequestHeaders(): any {

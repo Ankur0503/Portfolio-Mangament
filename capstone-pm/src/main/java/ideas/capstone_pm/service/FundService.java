@@ -2,7 +2,6 @@ package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
-import ideas.capstone_pm.entity.FundReturn;
 import ideas.capstone_pm.exception.fundexceptions.FundNotFoundException;
 import ideas.capstone_pm.repository.FundRepository;
 import ideas.capstone_pm.repository.FundReturnRepository;
@@ -68,6 +67,11 @@ public class FundService {
 
     public Double calculateFundValue(Fund fund, Double initialInvestment, Integer years) {
         FundReturnDTO fundReturnDTO = fundReturnRepository.findByFund(fund);
+
+        if (fundReturnDTO == null) {
+            throw new IllegalArgumentException("Fund not found.");
+        }
+
         Double returnMultiplier = fundReturnDTO.getFundReturnTotal();
         returnMultiplier = switch (years) {
             case 1 -> fundReturnDTO.getFundReturn1Year();

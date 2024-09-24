@@ -1,5 +1,6 @@
 package ideas.capstone_pm.handler;
 
+import ideas.capstone_pm.exception.fundexceptions.FilterNotFoundException;
 import ideas.capstone_pm.exception.fundexceptions.FundNotFoundException;
 import ideas.capstone_pm.exception.fundexceptions.InvalidArguments;
 import org.apache.coyote.Response;
@@ -18,5 +19,10 @@ public class FundExceptionHandler {
     @ExceptionHandler(InvalidArguments.class)
     public ResponseEntity<String> handleInvalidArguments(InvalidArguments invalidArguments) {
         return new ResponseEntity<>("Illegal Arguments passed", HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(FilterNotFoundException.class)
+    public ResponseEntity<String> handleFilterNotFound(FilterNotFoundException filterNotFoundException) {
+        return new ResponseEntity<>("Filter Not Found", HttpStatus.NOT_FOUND);
     }
 }

@@ -7,6 +7,7 @@ public interface DashBoardFundProjection {
     String getFundRisk();
     Double getFundNAV();
     String getFundType();
+    Double getFundAUM();
     Double getFundRating();
     DashBoardFundReturnProjection getFundReturn();
 

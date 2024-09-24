@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { CartService } from 'src/app/services/cart-service/cart.service';
 
@@ -36,6 +38,10 @@ export class CartComponent {
   deleteCart(cartId: number) {
     this.cartService.deleteCartById(cartId).subscribe(response => {
       this.fetchAllCarts()
+    }),
+    catchError(error => {
+      console.log(error)
+      return throwError(error)
     })
   }
 }
