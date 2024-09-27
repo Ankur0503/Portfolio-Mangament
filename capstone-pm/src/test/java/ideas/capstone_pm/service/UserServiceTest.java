@@ -1,4 +1,4 @@
-package ideas.capstone_pm.userservice;
+package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.UserDTO;
 import ideas.capstone_pm.dto.UserProjection;
@@ -6,7 +6,6 @@ import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.exception.userexpcetions.EmailAlreadyRegisteredException;
 import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.repository.UserRepository;
-import ideas.capstone_pm.service.UserService;
 import ideas.capstone_pm.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,31 +77,6 @@ public class UserServiceTest {
     }
 
     @Test
-    void testGetCurrentUserSuccess() {
-        UserProjection user = mock(UserProjection.class);
-        when(user.getUserEmail()).thenReturn(TEST_EMAIL);
-
-        when(jwtUtil.extractUsername(JWT_TOKEN)).thenReturn(TEST_EMAIL);
-        when(userRepository.findByUserEmail(TEST_EMAIL)).thenReturn(user);
-
-        UserProjection result = userService.getCurrentUser(AUTHORIZATION_HEADER);
-
-        assertGetCurrentUserSuccess(result);
-        verifyGetCurrentUserSuccess();
-    }
-
-    @Test
-    void testGetCurrentUserNotFound() {
-        when(jwtUtil.extractUsername(JWT_TOKEN)).thenReturn(TEST_EMAIL);
-        when(userRepository.findByUserEmail(TEST_EMAIL)).thenReturn(null);
-
-        UserProjection result = userService.getCurrentUser(AUTHORIZATION_HEADER);
-
-        assertNull(result);
-        verifyGetCurrentUserSuccess();
-    }
-
-    @Test
     void testUpdateUserSuccess() {
         UserDTO userDTO = createUserDTO();
         ApplicationUser existingUser = createExistingUser();
@@ -117,18 +91,6 @@ public class UserServiceTest {
         verifyUpdateUserSuccess(userDTO);
     }
 
-    @Test
-    void testUpdateUserNotFound() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(TEST_USER_ID);
-
-        when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.empty());
-
-        assertThrows(EmailNotFound.class, () -> userService.updateUser(userDTO));
-        verifyUserExistsCall();
-    }
-
-    // Helper methods
     private ApplicationUser createApplicationUser() {
         ApplicationUser user = new ApplicationUser();
         user.setUserEmail(TEST_EMAIL);

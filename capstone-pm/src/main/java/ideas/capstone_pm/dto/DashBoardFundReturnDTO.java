@@ -1,0 +1,16 @@
+package ideas.capstone_pm.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class DashBoardFundReturnDTO {
+    float fundReturn1Year;
+    float fundReturn3Year;
+    float fundReturn5Year;
+}

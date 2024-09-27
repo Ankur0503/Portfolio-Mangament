@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-custom">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/"
-    routerLinkActive="active">Portfolio Manager</a>
+    routerLinkActive="active">Fund Vice</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -33,7 +33,7 @@
         </li>
       </ul>
       <div class="d-flex mx-auto justify-content-center" >
-        <form class="d-flex search-form" (ngSubmit)="onSearch()"  *ngIf="authService.isLoggedIn" >
+        <form class="d-flex search-form" (ngSubmit)="onSearch()"  *ngIf="authService.isLoggedIn && !authService.inFundDetailsPage && !authService.inInvestmentsPage && !authService.inCartPage && !authService.inHomePage">
           <input
             class="form-control search-input me-2"
             type="search"

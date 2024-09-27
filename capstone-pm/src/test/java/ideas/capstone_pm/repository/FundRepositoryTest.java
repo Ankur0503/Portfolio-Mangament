@@ -1,8 +1,7 @@
-package ideas.capstone_pm.fundrepository;
+package ideas.capstone_pm.repository;
 
 import ideas.capstone_pm.dto.DashBoardFundProjection;
 import ideas.capstone_pm.dto.PeerFundsDTO;
-import ideas.capstone_pm.repository.FundRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

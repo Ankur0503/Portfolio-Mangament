@@ -10,17 +10,15 @@ import { TransactionService } from 'src/app/services/transaction-service/transac
 })
 export class InvestmentsComponent {
 
-  currentUser: User;
+  currentUser: User
   userFunds: any[]
 
-  investedValue = 755;
-  totalReturns = 95;
-  currentReturns = 1;
+  investedValue: number = 0
+  currentReturns: number = 0
 
-  totalReturnsPercentage = ((this.totalReturns / this.investedValue) * 100).toFixed(2);
-  currentReturnsPercentage = ((this.currentReturns / this.investedValue) * 100).toFixed(2);
+  currentReturnsPercentage: number = 0
 
-  constructor(public transactionService: TransactionService,public    authService: AuthService) {
+  constructor(public transactionService: TransactionService,public authService: AuthService) {
     this.currentUser = new User()
     this.userFunds = []
   }
@@ -28,6 +26,18 @@ export class InvestmentsComponent {
   ngOnInit() {
     this.transactionService.retrieveTransactionByUser(this.authService.userProfile.user.userId).subscribe(response => {
       Object.assign(this.userFunds, response.data)
+      this.userFunds.forEach(fund => {
+        this.currentReturns += fund.currentValue
+        this.investedValue += fund.transactionProjection.transactionInitialInvestment
+        console.log(fund)
+      })
+      this.currentReturnsPercentage = parseFloat(((this.currentReturns / this.investedValue) * 100).toFixed(2));
+
     })
+    this.authService.inInvestmentsPage = true
+  }
+
+  ngOnDestroy() {
+    this.authService.inInvestmentsPage = false
   }
 }

@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
-public class CapstonePmApplication {
+public class
+CapstonePmApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CapstonePmApplication.class, args);
 	}

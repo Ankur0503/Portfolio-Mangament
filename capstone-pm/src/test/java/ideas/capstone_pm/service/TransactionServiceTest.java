@@ -1,4 +1,4 @@
-package ideas.capstone_pm.transactionservice;
+package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.FundReturnDTO;
 import ideas.capstone_pm.dto.TransactionDTO;
@@ -9,7 +9,6 @@ import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
 import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
-import ideas.capstone_pm.service.TransactionService;
 import ideas.capstone_pm.util.TransactionServiceUtils;
 import ideas.capstone_pm.utils.MockUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -49,8 +47,8 @@ public class TransactionServiceTest {
     private static final int USER_ID = 1;
     private static final int TRANSACTION_ID = 1;
     private static final double TRANSACTION_AMOUNT = 5000.00;
-    private static final int USER_ID_FOR_TRANSACTION = 2001; // Example user ID, adjust as necessary
-    private static final Date TRANSACTION_DATE = new Date(); // Adjust as needed for test stability
+    private static final int USER_ID_FOR_TRANSACTION = 2001;
+    private static final Date TRANSACTION_DATE = new Date();
 
 
     @Mock

@@ -48,6 +48,7 @@ export class FundDetailsComponent {
 
   ngOnInit() {
     this.fetchFundById()
+    this.authService.inFundDetailsPage = true
   }
 
   private createChart() {
@@ -190,5 +191,9 @@ export class FundDetailsComponent {
       this.fundService.investmentSuccessfull = false
       this.cartService.isItemAddedToCart = false
     }, 2000); 
+  }
+
+  ngOnDestroy() {
+    this.authService.inFundDetailsPage = false
   }
 }

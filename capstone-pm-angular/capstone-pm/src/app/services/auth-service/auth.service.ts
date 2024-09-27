@@ -14,6 +14,11 @@ export class AuthService {
   public isLoggedIn: boolean
   errorFlag: boolean
 
+  inFundDetailsPage: boolean
+  inInvestmentsPage: boolean
+  inCartPage: boolean
+  inHomePage: boolean
+
   canActivate(): boolean {
     if (this.isLoggedIn && this.userProfile.jwt)
       return true
@@ -25,11 +30,16 @@ export class AuthService {
     this.userProfile = new UserResponse()
     this.errorFlag = false
     this.isLoggedIn = false
+
+    this.inFundDetailsPage = false
+    this.inInvestmentsPage = false
+    this.inCartPage = false
+    this.inHomePage = false
   }
 
   register(user: User): Observable<any> {
     let savedUser: any;
-    return this.http.post<any>("http://localhost:8080/users/register", user).pipe(
+    return this.http.post<any>("http://localhost:8080/users", user).pipe(
       map(response => {
         return {data: response}
       })

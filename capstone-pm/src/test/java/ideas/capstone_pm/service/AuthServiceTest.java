@@ -1,11 +1,9 @@
-package ideas.capstone_pm.authservice;
+package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.LoginDTO;
 import ideas.capstone_pm.dto.UserProjection;
 import ideas.capstone_pm.dto.authentication.AuthenticationResponse;
 import ideas.capstone_pm.repository.UserRepository;
-import ideas.capstone_pm.service.ApplicationUserDetailsService;
-import ideas.capstone_pm.service.AuthService;
 import ideas.capstone_pm.util.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +57,6 @@ public class AuthServiceTest {
 
     @Test
     void testAuthenticateFailure() {
-        // Given
         String email = "test@example.com";
         String password = "wrongPassword";
         LoginDTO loginRequest = new LoginDTO(email, password);

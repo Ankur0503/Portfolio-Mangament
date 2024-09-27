@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/users/register")
+    @PostMapping("/users")
     public ApplicationUser addUser(@RequestBody ApplicationUser applicationUser) {
         return userService.addUser(applicationUser);
     }

@@ -1,10 +1,9 @@
-package ideas.capstone_pm.fundservice;
+package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.repository.FundRepository;
 import ideas.capstone_pm.repository.FundReturnRepository;
-import ideas.capstone_pm.service.FundService;
 import ideas.capstone_pm.util.FundServiceUtils;
 import ideas.capstone_pm.utils.MockUtils;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,12 +3,14 @@ package ideas.capstone_pm.controller;
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.exception.fundexceptions.InvalidArguments;
+import ideas.capstone_pm.service.DashBoardFundProjectionConverter;
 import ideas.capstone_pm.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -38,8 +40,9 @@ public class FundController {
     }
 
     @GetMapping("mutual-funds/filter")
-    public List<DashBoardFundProjection> getFundsByFilter(@RequestParam List<String> fundAMCs, @RequestParam List<String> fundRisks, @RequestParam Double fundAUM) {
-        return fundService.getFundsByFilter(fundAMCs, fundRisks, fundAUM);
+    public List<DashBoardFundDTO> getFundsByFilter(@RequestParam List<String> fundAMCs, @RequestParam List<String> fundRisks, @RequestParam Double fundAUM) {
+        List<DashBoardFundProjection> funds = fundService.getFundsByFilter(fundAMCs, fundRisks, fundAUM);
+        return DashBoardFundProjectionConverter.convertToDTOList(funds);
     }
 
     @PostMapping("mutual-funds/fund-calculator")

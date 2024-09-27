@@ -22,6 +22,7 @@ export class CartComponent {
 
   ngOnInit() {
     this.fetchAllCarts()
+    this.authService.inCartPage = true
   }
 
   fetchAllCarts() {
@@ -43,5 +44,9 @@ export class CartComponent {
       console.log(error)
       return throwError(error)
     })
+  }
+
+  ngOnDestroy() {
+    this.authService.inCartPage = false
   }
 }

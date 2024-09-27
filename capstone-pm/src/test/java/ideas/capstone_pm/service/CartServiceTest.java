@@ -1,4 +1,4 @@
-package ideas.capstone_pm.cartservice;
+package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.AddToCartDTO;
 import ideas.capstone_pm.dto.CartProjection;
@@ -6,9 +6,9 @@ import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Cart;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
+import ideas.capstone_pm.exception.cartexceptions.CartNotFoundException;
 import ideas.capstone_pm.repository.CartRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
-import ideas.capstone_pm.service.CartService;
 import ideas.capstone_pm.util.CartServiceUtils;
 import ideas.capstone_pm.utils.MockUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,6 +61,17 @@ public class CartServiceTest {
         List<CartProjection> actualCarts = cartService.getCartsByUser(user);
         assertNotNull(actualCarts);
         assertEquals(expectedCarts, actualCarts);
+    }
+
+    @Test
+    void shouldThrowCartNotFoundException() {
+        ApplicationUser user = new ApplicationUser();
+        when(cartRepository.findByUser(user)).thenThrow(new RuntimeException());
+
+        assertThrows(CartNotFoundException.class, () -> {
+            cartService.getCartsByUser(user);
+        });
+        verify(cartRepository, times(1)).findByUser(user);
     }
 
     @Test

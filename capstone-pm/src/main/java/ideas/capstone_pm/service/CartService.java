@@ -7,6 +7,7 @@ import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Cart;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
+import ideas.capstone_pm.exception.cartexceptions.CartNotFoundException;
 import ideas.capstone_pm.repository.CartRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
 import ideas.capstone_pm.util.CartServiceUtils;
@@ -42,7 +43,7 @@ public class CartService {
         try {
             return cartRepository.findByUser(user);
         } catch (Exception e) {
-            throw new RuntimeException("An error occurred while retrieving carts for the user.");
+            throw new CartNotFoundException();
         }
     }
 
