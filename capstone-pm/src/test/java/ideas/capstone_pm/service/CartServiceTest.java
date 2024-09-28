@@ -1,7 +1,7 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.AddToCartDTO;
-import ideas.capstone_pm.dto.CartProjection;
+import ideas.capstone_pm.projection.CartProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Cart;
 import ideas.capstone_pm.entity.Fund;
@@ -11,6 +11,7 @@ import ideas.capstone_pm.repository.CartRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
 import ideas.capstone_pm.util.CartServiceUtils;
 import ideas.capstone_pm.utils.MockUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 public class CartServiceTest {
 
@@ -56,49 +59,70 @@ public class CartServiceTest {
     void getCartsByUser() {
         ApplicationUser user = new ApplicationUser(1, "John Doe", "johndoe@example.com", "password123", "1234567890", 30, "USER", null, null);
         List<CartProjection> expectedCarts = MockUtils.mockCartProjectionList();
-        when(cartRepository.findByUser(user)).thenReturn(expectedCarts);
+        when(cartRepository.findByUser(any(ApplicationUser.class))).thenReturn(expectedCarts);
 
-        List<CartProjection> actualCarts = cartService.getCartsByUser(user);
+        List<CartProjection> actualCarts = cartService.getCartsByUser(1);
         assertNotNull(actualCarts);
         assertEquals(expectedCarts, actualCarts);
     }
 
     @Test
-    void shouldThrowCartNotFoundException() {
+    public void shouldThrowCartNotFoundExceptionWhenErrorOccurs() {
+        // Given
+        int userId = 1;
         ApplicationUser user = new ApplicationUser();
-        when(cartRepository.findByUser(user)).thenThrow(new RuntimeException());
+        user.setUserId(userId);
 
-        assertThrows(CartNotFoundException.class, () -> {
-            cartService.getCartsByUser(user);
+        when(cartRepository.findByUser(user)).thenThrow(new RuntimeException("Database error"));
+
+        assertThrows(CartNotFoundException.class, () -> cartService.getCartsByUser(userId));
+    }
+
+    @Test
+    public void shouldAddCartSuccessfully() {
+        AddToCartDTO addToCartDTO = new AddToCartDTO();
+        Cart expectedCart = new Cart();
+        when(cartServiceUtils.buildCart(addToCartDTO)).thenReturn(expectedCart);
+        when(cartRepository.save(expectedCart)).thenReturn(expectedCart);
+
+        Cart result = cartService.addCart(addToCartDTO);
+        assertEquals(expectedCart, result);
+    }
+
+    @Test
+    public void shouldThrowRuntimeExceptionWhenAddingCartFails() {
+        AddToCartDTO addToCartDTO = new AddToCartDTO();
+        when(cartServiceUtils.buildCart(addToCartDTO)).thenThrow(new RuntimeException("Error while building cart"));
+
+        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> {
+            cartService.addCart(addToCartDTO);
         });
-        verify(cartRepository, times(1)).findByUser(user);
+        assertEquals("An error occurred while adding the cart.", exception.getMessage());
     }
 
     @Test
-    void addCart() {
-        AddToCartDTO mockedAddTOCartDTO = buildAddToCartDTO();
-        Cart mockedCart = buildCart();
+    public void shouldDeleteCartSuccessfullyWhenCartExists() {
+        Integer cartId = 1;
+        Cart cart = new Cart();
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
 
-        when(cartServiceUtils.buildCart(mockedAddTOCartDTO)).thenReturn(mockedCart);
-        when(cartRepository.save(mockedCart)).thenReturn(mockedCart);
-
-        Cart actualCart = cartService.addCart(mockedAddTOCartDTO);
-        assertNotNull(actualCart);
-        assertEquals(mockedCart, actualCart);
+        cartService.deleteCartByCartId(cartId);
+        verify(cartRepository, times(1)).deleteById(cartId);
     }
 
     @Test
-    void deleteCartByCartId() {
-        Cart mockedCart = buildCart();
-        when(cartRepository.findById(mockedCart.getCartId())).thenReturn(Optional.of(mockedCart));
-        doNothing().when(cartRepository).deleteById(mockedCart.getCartId());
+    public void shouldThrowRuntimeExceptionWhenCartNotFound() {
+        Integer cartId = 1;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            cartService.deleteCartByCartId(cartId);
+        });
 
-        cartService.deleteCartByCartId(mockedCart.getCartId());
-        verify(cartRepository).deleteById(mockedCart.getCartId());
+        assertEquals("Cart not found", exception.getMessage());
     }
 
     @Test
-    void computeTotalAmountInCart() {
+    void shouldComputeTotalAmountInCartWithMultipleCarts() {
         ApplicationUser user = buildApplicationUser();
         List<CartProjection> mockedCartProjections = MockUtils.mockCartProjectionList();
         double expectedTotalAmountInCart = 5000.0;
@@ -110,20 +134,39 @@ public class CartServiceTest {
     }
 
     @Test
-    void processCart() {
-        List<CartProjection> mockedCartProjections = MockUtils.mockCartProjectionList();
-        Transaction mockedTransaction = buildTransaction();
+    void shouldReturnZeroWhenUserHasNoCarts() {
         ApplicationUser user = buildApplicationUser();
+        when(cartRepository.findByUser(user)).thenReturn(Collections.emptyList());
 
-        when(transactionRepository.save(any(Transaction.class))).thenReturn(mockedTransaction);
-        when(cartRepository.findByUser(user)).thenReturn(mockedCartProjections);
-        doNothing().when(cartRepository).deleteByUser(user);
+        double actualTotalAmount = cartService.computeTotalAmountInCart(user);
+        assertEquals(0.0, actualTotalAmount);
+    }
+
+    @Test
+    void shouldDoNothingWhenCartIsEmpty() {
+        ApplicationUser user = new ApplicationUser();
+        when(cartRepository.findByUser(user)).thenReturn(Collections.emptyList());
 
         cartService.processCart(user);
 
-        verify(cartRepository).deleteByUser(user);
-        verify(transactionRepository).save(any(Transaction.class));
+        verify(cartRepository).findByUser(user);
+        verify(transactionRepository, never()).saveAll(any());
+        verify(cartRepository, never()).deleteByUser(any());
     }
+
+    @Test
+    void shouldSaveTransactionsAndDeleteCart_WhenCartHasMultipleItems() {
+        ApplicationUser user = new ApplicationUser();
+        List<CartProjection> mockedCartProjections = MockUtils.mockCartProjectionList();
+
+        when(cartRepository.findByUser(user)).thenReturn(mockedCartProjections);
+
+        cartService.processCart(user);
+
+        verify(transactionRepository).saveAll(any(List.class));
+        verify(cartRepository).deleteByUser(user);
+    }
+
 
     private AddToCartDTO buildAddToCartDTO() {
         return new AddToCartDTO(buildFund(), buildApplicationUser(), 7000.0);

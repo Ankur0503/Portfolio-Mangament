@@ -1,6 +1,6 @@
-package ideas.capstone_pm.dto;
+package ideas.capstone_pm.projection;
 
-public interface AdminDTO {
+public interface AdminProjection {
     String getAdminEmail();
     String getAdminPassword();
     String getAdminRole();

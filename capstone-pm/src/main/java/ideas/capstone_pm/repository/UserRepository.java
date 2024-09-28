@@ -1,6 +1,6 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.UserProjection;
+import ideas.capstone_pm.projection.UserProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import org.springframework.data.repository.CrudRepository;
 

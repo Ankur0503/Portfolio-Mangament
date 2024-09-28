@@ -3,6 +3,8 @@ package ideas.capstone_pm.service;
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.exception.fundexceptions.FundNotFoundException;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
+import ideas.capstone_pm.projection.FundReturnProjection;
 import ideas.capstone_pm.repository.FundRepository;
 import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.util.FundServiceUtils;
@@ -65,18 +67,18 @@ public class FundService {
         return fundRepository.findBy();
     }
 
-    public Double calculateFundValue(Fund fund, Double initialInvestment, Integer years) {
-        FundReturnDTO fundReturnDTO = fundReturnRepository.findByFund(fund);
+    public Double calculateFundValue(Integer fundId, Double initialInvestment, Integer years) {
+        FundReturnProjection fundReturnProjection = fundReturnRepository.findByFundFundId(fundId);
 
-        if (fundReturnDTO == null) {
+        if (fundReturnProjection == null) {
             throw new IllegalArgumentException("Fund not found.");
         }
 
-        Double returnMultiplier = fundReturnDTO.getFundReturnTotal();
+        Double returnMultiplier = fundReturnProjection.getFundReturnTotal();
         returnMultiplier = switch (years) {
-            case 1 -> fundReturnDTO.getFundReturn1Year();
-            case 3 -> fundReturnDTO.getFundReturn3Year();
-            case 5 -> fundReturnDTO.getFundReturn5Year();
+            case 1 -> fundReturnProjection.getFundReturn1Year();
+            case 3 -> fundReturnProjection.getFundReturn3Year();
+            case 5 -> fundReturnProjection.getFundReturn5Year();
             default -> returnMultiplier;
         };
         returnMultiplier = returnMultiplier / 100.00 + 1.0;

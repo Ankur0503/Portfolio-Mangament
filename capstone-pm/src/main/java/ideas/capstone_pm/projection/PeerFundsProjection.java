@@ -1,6 +1,6 @@
-package ideas.capstone_pm.dto;
+package ideas.capstone_pm.projection;
 
-public interface PeerFundsDTO {
+public interface PeerFundsProjection {
     Integer getFundId();
     String getFundName();
     String getFundType();

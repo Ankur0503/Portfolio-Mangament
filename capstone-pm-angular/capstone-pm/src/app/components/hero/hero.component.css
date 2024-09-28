@@ -11,6 +11,14 @@
     margin-right: 2rem;
   }
  
+  .section{
+    height: 60vh;
+    margin-top: 0rem;
+    font-weight: 400px;
+    margin-top: 5rem;
+    margin-left: 2rem;
+  }
+
   .hero-text {
     flex: 1;
     display: flex;
@@ -114,4 +122,130 @@
 .button-48 span {
   z-index: 1;
   position: relative;
+}
+.carousel-container {
+  padding: 50px 0;
+  text-align: center;
+  background-color: #ffffff; /* White background */
+}
+
+.carousel-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2c3e50; /* Dark Gray */
+}
+
+/* Carousel Wrapper */
+.carousel {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Individual Carousel Item */
+.carousel-item {
+  min-width: 100%;
+  opacity: 0;
+  transform: translateX(100%); /* Start off-screen on the right */
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+/* Active slide moves from right to left */
+.carousel-item.active {
+  opacity: 1;
+  transform: translateX(0); /* Move to the center */
+  animation: slideInRightToLeft 1s ease-in-out, scaleIn 1s ease-in-out;
+}
+
+/* Keyframes for Sliding In from Right to Left */
+@keyframes slideInRightToLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(100%); /* Start off-screen on the right */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0); /* Slide into center */
+  }
+}
+
+/* Keyframe for Scale-In effect */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Keyframe for Sliding Out to the Left */
+@keyframes slideOutLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0); /* Start at center */
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%); /* Move off-screen to the left */
+  }
+}
+
+/* Image styling with smooth zoom effect */
+.carousel img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  animation: imageZoom 5s ease-in-out infinite alternate;
+}
+
+/* Keyframe for smooth Zoom-In and Zoom-Out effect */
+@keyframes imageZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05); /* Slight zoom-in */
+  }
+}
+
+/* Text styling with Fade-In and Slide-Up effect */
+.carousel-item p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin-top: 15px;
+  opacity: 0;
+  animation: fadeInText 1.2s ease-in-out forwards;
+}
+
+/* Keyframe for Text Fade-in with Slide-Up */
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(30px); /* Start below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Slide into view */
+  }
+}
+
+/* Custom Button Styling (Optional) */
+.carousel-container button {
+  background-color: #4CAF50; /* Primary Green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.carousel-container button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Hover effect */
 }

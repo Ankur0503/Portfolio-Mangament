@@ -32,6 +32,10 @@
             <p>By continuing, you agree to <a href="/funds/filter">Terms & Conditions</a></p>
         </div>
 
-        <button class="proceed-to-pay-button" [disabled]="totalPayableAmount === 0">PROCEED TO PAY</button>
+        <button class="proceed-to-pay-button" [disabled]="totalPayableAmount === 0" (click)="onProceedToPay()">PROCEED TO PAY</button>
+
+        <div class="alert alert-success mt-4 mb-3" role="alert" *ngIf="cartService.isInvestmentSuccess">
+            Payment Successfull.
+        </div>
     </div>
 </div>

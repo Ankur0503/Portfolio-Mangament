@@ -1,8 +1,8 @@
 package ideas.capstone_pm.service;
 
-import ideas.capstone_pm.dto.FundReturnDTO;
+import ideas.capstone_pm.projection.FundReturnProjection;
 import ideas.capstone_pm.dto.TransactionDTO;
-import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.projection.TransactionProjection;
 import ideas.capstone_pm.dto.TransactionResponseDTO;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Fund;
@@ -69,15 +69,15 @@ public class TransactionServiceTest {
     void testGetFundByUser() {
         ApplicationUser user = createUser();
         List<TransactionProjection> mockTransactions = MockUtils.mockTransactionProjectionsList();
-        FundReturnDTO mockedFundReturnDTO = createMockFundReturnDTO();
+        FundReturnProjection mockedFundReturnProjection = createMockFundReturnDTO();
 
         when(transactionRepository.findByUser(user)).thenReturn(mockTransactions);
-        when(fundReturnRepository.findByFund(any(Fund.class))).thenReturn(mockedFundReturnDTO);
+        when(fundReturnRepository.findByFundFundId(any(Integer.class))).thenReturn(mockedFundReturnProjection);
 
         List<TransactionResponseDTO> actualTransactions = transactionService.getFundsByUser(user);
 
         assertNotNull(actualTransactions);
-        assertFundReturnDTO(mockedFundReturnDTO);
+        assertFundReturnDTO(mockedFundReturnProjection);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class TransactionServiceTest {
         return new ApplicationUser(1, USER_NAME, USER_EMAIL, USER_PASSWORD, USER_PHONE, USER_AGE, USER_ROLE, null, null);
     }
 
-    private FundReturnDTO createMockFundReturnDTO() {
+    private FundReturnProjection createMockFundReturnDTO() {
         return MockUtils.mockFundReturnProjection(FUND_RETURN_1_MONTH, FUND_RETURN_1_YEAR, FUND_RETURN_3_YEAR, FUND_RETURN_5_YEAR, FUND_RETURN_TOTAL, FUND_ID, FUND_NAME, FUND_TYPE);
     }
 
@@ -142,13 +142,13 @@ public class TransactionServiceTest {
         when(transactionRepository.save(any(Transaction.class))).thenReturn(expectedTransaction);
     }
 
-    private void assertFundReturnDTO(FundReturnDTO fundReturnDTO) {
-        FundReturnDTO.FundDTO fundDTO = fundReturnDTO.getFund();
-        assertEquals(FUND_RETURN_1_MONTH, fundReturnDTO.getFundReturn1Month());
-        assertEquals(FUND_RETURN_1_YEAR, fundReturnDTO.getFundReturn1Year());
-        assertEquals(FUND_RETURN_3_YEAR, fundReturnDTO.getFundReturn3Year());
-        assertEquals(FUND_RETURN_5_YEAR, fundReturnDTO.getFundReturn5Year());
-        assertEquals(FUND_RETURN_TOTAL, fundReturnDTO.getFundReturnTotal());
+    private void assertFundReturnDTO(FundReturnProjection fundReturnProjection) {
+        FundReturnProjection.FundDTO fundDTO = fundReturnProjection.getFund();
+        assertEquals(FUND_RETURN_1_MONTH, fundReturnProjection.getFundReturn1Month());
+        assertEquals(FUND_RETURN_1_YEAR, fundReturnProjection.getFundReturn1Year());
+        assertEquals(FUND_RETURN_3_YEAR, fundReturnProjection.getFundReturn3Year());
+        assertEquals(FUND_RETURN_5_YEAR, fundReturnProjection.getFundReturn5Year());
+        assertEquals(FUND_RETURN_TOTAL, fundReturnProjection.getFundReturnTotal());
         assertEquals(FUND_ID, fundDTO.getFundId());
         assertEquals(FUND_NAME, fundDTO.getFundName());
         assertEquals(FUND_TYPE, fundDTO.getFundType());

@@ -3,14 +3,13 @@ package ideas.capstone_pm.controller;
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.exception.fundexceptions.InvalidArguments;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
 import ideas.capstone_pm.service.DashBoardFundProjectionConverter;
 import ideas.capstone_pm.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -45,11 +44,11 @@ public class FundController {
         return DashBoardFundProjectionConverter.convertToDTOList(funds);
     }
 
-    @PostMapping("mutual-funds/fund-calculator")
-    public Double calculateFundValue(@RequestBody  Fund fund, @RequestParam("initialInvestment") Double initialInvestment, @RequestParam("years") Integer years) {
+    @GetMapping("mutual-funds/calculate/return")
+    public Double calculateFundValue(@RequestParam("fundId") Integer fundId, @RequestParam("initialInvestment") Double initialInvestment, @RequestParam("years") Integer years) {
         if(years != 1 && years != 3 && years != 5) {
             throw new InvalidArguments();
         }
-        return fundService.calculateFundValue(fund, initialInvestment, years);
+        return fundService.calculateFundValue(fundId, initialInvestment, years);
     }
 }

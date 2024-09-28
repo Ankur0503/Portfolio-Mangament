@@ -1,6 +1,6 @@
-package ideas.capstone_pm.dto;
+package ideas.capstone_pm.projection;
 
-public interface FundReturnDTO {
+public interface FundReturnProjection {
 
     Double getFundReturn1Month();
     Double getFundReturn1Year();

@@ -1,4 +1,4 @@
-package ideas.capstone_pm.dto;
+package ideas.capstone_pm.projection;
 
 public interface UserProjection {
     Integer getUserId();

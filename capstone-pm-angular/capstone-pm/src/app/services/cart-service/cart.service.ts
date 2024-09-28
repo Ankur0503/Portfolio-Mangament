@@ -10,6 +10,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 export class CartService {
 
   isItemAddedToCart: boolean = false
+  isInvestmentSuccess: boolean = false;
 
   constructor(public http: HttpClient, public authService: AuthService) { }
 
@@ -45,6 +46,22 @@ export class CartService {
     return this.http.delete<any>("http://localhost:8080/user/cart", {headers, params}).pipe(
       map(response => {
         return {data: response}
+      }),
+      catchError(error => {
+        return throwError(error)
+      })
+    )
+  }
+
+  processCartToPay(userId: number): Observable<any> {
+    const headers = this.authService.getRequestHeaders()
+    let user = {
+      userId: userId
+    }
+
+    return this.http.post<any>("http://localhost:8080/user/cart/process", user, {headers}).pipe(
+      map(response => {
+        this.isInvestmentSuccess = true
       }),
       catchError(error => {
         return throwError(error)

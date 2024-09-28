@@ -1,6 +1,6 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.projection.TransactionProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;

@@ -29,7 +29,6 @@ export class InvestmentsComponent {
       this.userFunds.forEach(fund => {
         this.currentReturns += fund.currentValue
         this.investedValue += fund.transactionProjection.transactionInitialInvestment
-        console.log(fund)
       })
       this.currentReturnsPercentage = parseFloat(((this.currentReturns / this.investedValue) * 100).toFixed(2));
 

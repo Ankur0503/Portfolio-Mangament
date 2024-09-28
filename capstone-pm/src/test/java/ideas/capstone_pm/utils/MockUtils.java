@@ -1,9 +1,9 @@
 package ideas.capstone_pm.utils;
 
-import ideas.capstone_pm.dto.CartProjection;
-import ideas.capstone_pm.dto.DashBoardFundProjection;
-import ideas.capstone_pm.dto.FundReturnDTO;
-import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.projection.CartProjection;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
+import ideas.capstone_pm.projection.FundReturnProjection;
+import ideas.capstone_pm.projection.TransactionProjection;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -93,22 +93,22 @@ public class MockUtils {
         return transactionProjections;
     }
 
-    public static FundReturnDTO mockFundReturnProjection(Double fundReturn1Month, Double fundReturn1Year, Double fundReturn3Year, Double fundReturn5Year, Double fundReturnTotal, Integer fundId, String fundName, String fundType) {
-        FundReturnDTO fundReturnDTO = Mockito.mock(FundReturnDTO.class);
-        FundReturnDTO.FundDTO fundDTO = Mockito.mock(FundReturnDTO.FundDTO.class);
+    public static FundReturnProjection mockFundReturnProjection(Double fundReturn1Month, Double fundReturn1Year, Double fundReturn3Year, Double fundReturn5Year, Double fundReturnTotal, Integer fundId, String fundName, String fundType) {
+        FundReturnProjection fundReturnProjection = Mockito.mock(FundReturnProjection.class);
+        FundReturnProjection.FundDTO fundDTO = Mockito.mock(FundReturnProjection.FundDTO.class);
 
         when(fundDTO.getFundId()).thenReturn(fundId);
         when(fundDTO.getFundName()).thenReturn(fundName);
         when(fundDTO.getFundType()).thenReturn(fundType);
 
-        when(fundReturnDTO.getFundReturn1Month()).thenReturn(fundReturn1Month);
-        when(fundReturnDTO.getFundReturn1Year()).thenReturn(fundReturn1Year);
-        when(fundReturnDTO.getFundReturn3Year()).thenReturn(fundReturn3Year);
-        when(fundReturnDTO.getFundReturn5Year()).thenReturn(fundReturn5Year);
-        when(fundReturnDTO.getFundReturnTotal()).thenReturn(fundReturnTotal);
-        when(fundReturnDTO.getFund()).thenReturn(fundDTO);
+        when(fundReturnProjection.getFundReturn1Month()).thenReturn(fundReturn1Month);
+        when(fundReturnProjection.getFundReturn1Year()).thenReturn(fundReturn1Year);
+        when(fundReturnProjection.getFundReturn3Year()).thenReturn(fundReturn3Year);
+        when(fundReturnProjection.getFundReturn5Year()).thenReturn(fundReturn5Year);
+        when(fundReturnProjection.getFundReturnTotal()).thenReturn(fundReturnTotal);
+        when(fundReturnProjection.getFund()).thenReturn(fundDTO);
 
-        return fundReturnDTO;
+        return fundReturnProjection;
     }
 
     public static CartProjection mockCartProjection(Integer cartId, Double plannedInvestment, Integer fundId, String fundName) {

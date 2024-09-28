@@ -121,6 +121,11 @@ export class FundDetailsComponent {
     }
   }
 
+  onInputChange(event: any): void {
+    const inputValue = event.target.value;
+    event.target.value = inputValue.replace(/[^0-9]/g, '0');
+  }
+
   onPeerFundClick(peerFund: any) {
     this.router.navigate(['/funds', peerFund.fundName], {queryParams: {fundId: peerFund.fundId}})
     this.fetchFundById()

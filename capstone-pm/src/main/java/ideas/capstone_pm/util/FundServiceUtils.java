@@ -1,9 +1,9 @@
 package ideas.capstone_pm.util;
 
-import ideas.capstone_pm.dto.AverageReturnDTO;
+import ideas.capstone_pm.projection.AverageReturnProjection;
 import ideas.capstone_pm.dto.FundDescriptionDTO;
 import ideas.capstone_pm.dto.FundHistoryDTO;
-import ideas.capstone_pm.dto.PeerFundsDTO;
+import ideas.capstone_pm.projection.PeerFundsProjection;
 import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.FundReturn;
 import ideas.capstone_pm.repository.FundRepository;
@@ -40,10 +40,10 @@ public class FundServiceUtils {
     }
 
     public FundDescriptionDTO buildFundDTO(Fund fund) {
-        List<PeerFundsDTO> peerFunds = fundRepository.findByFundTypeAndFundIdNotIn(fund.getFundType(), List.of(fund.getFundId()));
-        AverageReturnDTO averageReturnDTO = fundReturnRepository.findAverageReturnsByFundType(fund.getFundType());
+        List<PeerFundsProjection> peerFunds = fundRepository.findByFundTypeAndFundIdNotIn(fund.getFundType(), List.of(fund.getFundId()));
+        AverageReturnProjection averageReturnProjection = fundReturnRepository.findAverageReturnsByFundType(fund.getFundType());
         return new FundDescriptionDTO(fund.getFundId(), fund.getFundName(), fund.getFundAMC(), fund.getFundRisk(), fund.getFundType(),
-                fund.getFundAUM(), fund.getFundNAV(), fund.getFundManager(), fund.getFundDescription(), fund.getFundRating(), buildFundHistoryDTO(fund.getFundReturn()), peerFunds, averageReturnDTO);
+                fund.getFundAUM(), fund.getFundNAV(), fund.getFundManager(), fund.getFundDescription(), fund.getFundRating(), buildFundHistoryDTO(fund.getFundReturn()), peerFunds, averageReturnProjection);
     }
 
     public FundHistoryDTO buildFundHistoryDTO(FundReturn fundReturn) {

@@ -1,7 +1,7 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.DashBoardFundDTO;
-import ideas.capstone_pm.dto.DashBoardFundProjection;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
 import ideas.capstone_pm.dto.DashBoardFundReturnDTO;
 
 import java.util.List;

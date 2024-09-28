@@ -2,6 +2,8 @@ package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.*;
 import ideas.capstone_pm.entity.Fund;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
+import ideas.capstone_pm.projection.FundReturnProjection;
 import ideas.capstone_pm.repository.FundRepository;
 import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.util.FundServiceUtils;
@@ -133,18 +135,18 @@ public class FundServiceTest {
 
     @Test
     void calculateFundValue() {
-        FundReturnDTO mockedFundReturnDTO = MockUtils.mockFundReturnProjection(2.0, 12.5, 38.7, 75.4, 250.4, 1, "SBI BlueChip Fund", "Equity");
+        FundReturnProjection mockedFundReturnProjection = MockUtils.mockFundReturnProjection(2.0, 12.5, 38.7, 75.4, 250.4, 1, "SBI BlueChip Fund", "Equity");
         Fund mockedFund = buildFund();
         Double expectedFundValue = 1660152.3524741023;
 
-        when(fundReturnRepository.findByFund(any(Fund.class))).thenReturn(mockedFundReturnDTO);
+        when(fundReturnRepository.findByFundFundId(any(Integer.class))).thenReturn(mockedFundReturnProjection);
 
-        Double actualFundValue = fundService.calculateFundValue(mockedFund, 100000.0, 5);
+        Double actualFundValue = fundService.calculateFundValue(1, 100000.0, 5);
 
         assertNotNull(actualFundValue);
         assertEquals(expectedFundValue, actualFundValue);
 
-        assertFundReturnDTO(mockedFundReturnDTO);
+        assertFundReturnDTO(mockedFundReturnProjection);
     }
 
     private void mockFundRepositoryResponses(List<String> validFundAMCs, List<String> validFundRisks, double validFundAUM, List<DashBoardFundProjection> mockFunds) {
@@ -193,14 +195,14 @@ public class FundServiceTest {
         assertEquals(expectedFunds, actualFunds);
     }
 
-    private void assertFundReturnDTO(FundReturnDTO fundReturnDTO) {
-        assertEquals(2.0, fundReturnDTO.getFundReturn1Month());
-        assertEquals(12.5, fundReturnDTO.getFundReturn1Year());
-        assertEquals(38.7, fundReturnDTO.getFundReturn3Year());
-        assertEquals(75.4, fundReturnDTO.getFundReturn5Year());
-        assertEquals(250.4, fundReturnDTO.getFundReturnTotal());
+    private void assertFundReturnDTO(FundReturnProjection fundReturnProjection) {
+        assertEquals(2.0, fundReturnProjection.getFundReturn1Month());
+        assertEquals(12.5, fundReturnProjection.getFundReturn1Year());
+        assertEquals(38.7, fundReturnProjection.getFundReturn3Year());
+        assertEquals(75.4, fundReturnProjection.getFundReturn5Year());
+        assertEquals(250.4, fundReturnProjection.getFundReturnTotal());
 
-        FundReturnDTO.FundDTO fundDTO = fundReturnDTO.getFund();
+        FundReturnProjection.FundDTO fundDTO = fundReturnProjection.getFund();
         assertEquals(1, fundDTO.getFundId());
         assertEquals("SBI BlueChip Fund", fundDTO.getFundName());
         assertEquals("Equity", fundDTO.getFundType());

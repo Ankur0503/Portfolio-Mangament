@@ -1,8 +1,11 @@
 package ideas.capstone_pm.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ideas.capstone_pm.CapstonePmApplication;
 import ideas.capstone_pm.dto.DashBoardFilters;
-import ideas.capstone_pm.dto.DashBoardFundProjection;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
 import ideas.capstone_pm.dto.FundDescriptionDTO;
+import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.service.ApplicationUserDetailsService;
 import ideas.capstone_pm.service.FundService;
 import ideas.capstone_pm.util.JwtUtil;
@@ -10,7 +13,8 @@ import ideas.capstone_pm.utils.MockUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +26,13 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@WebMvcTest(FundController.class)
+@SpringBootTest(classes = CapstonePmApplication.class)
+@AutoConfigureMockMvc
 public class FundControllerTest {
     @MockBean
     FundService fundService;
@@ -39,6 +45,8 @@ public class FundControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
@@ -68,6 +76,26 @@ public class FundControllerTest {
 
     @WithMockUser(username = "abc@gmail.com", roles = {"USER"})
     @Test
+    void shouldGetAllFunds() throws Exception {
+        DashBoardFundProjection dashBoardFundProjection = buildDashBoardFundProjection();
+
+        when(fundService.getAllFunds()).thenReturn(List.of(dashBoardFundProjection));
+
+        mockMvc.perform(get("/mutual-funds")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", header))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].fundName").value("SBI Blue Chip Fund"))
+                .andExpect(jsonPath("$[0].fundAMC").value("SBI Mutual Fund"))
+                .andExpect(jsonPath("$[0].fundAUM").value(10000.0))
+                .andExpect(jsonPath("$[0].fundNAV").value(21.0))
+                .andExpect(jsonPath("$[0].fundRating").value(3.7))
+                .andExpect(jsonPath("$[0].fundRisk").value("High"))
+                .andExpect(jsonPath("$[0].fundType").value("Debt"));
+    }
+
+    @WithMockUser(username = "abc@gmail.com", roles = {"USER"})
+    @Test
     void shouldGetFundById() throws Exception {
         int fundId = 1;
         FundDescriptionDTO mockFundDescription = new FundDescriptionDTO();
@@ -81,6 +109,21 @@ public class FundControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.fundId").value(fundId))
                 .andExpect(jsonPath("$.fundName").value("Test Fund"));
+    }
+
+    @WithMockUser(username = "test@gmail.com", roles = {"ADMIN"})
+    @Test
+    void shouldAddFund() throws Exception {
+        Fund fund = buildFund();
+        FundDescriptionDTO fundDescriptionDTO = buildFundDescriptionDTO();
+
+        when(fundService.addFund(any(FundDescriptionDTO.class))).thenReturn(fund);
+
+        mockMvc.perform(post("/mutual-funds/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", header)
+                .content(new ObjectMapper().writeValueAsString(fundDescriptionDTO)))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(username = "abc@gmail.com", roles = {"USER"})
@@ -114,5 +157,99 @@ public class FundControllerTest {
                 .andExpect(jsonPath("$[0].fundReturn.fundReturn1Year").value(10.5))
                 .andExpect(jsonPath("$[0].fundReturn.fundReturn3Year").value(25.0))
                 .andExpect(jsonPath("$[0].fundReturn.fundReturn5Year").value(40.0));
+    }
+
+    @WithMockUser(username = "abc@gmail.com", roles = {"USER"})
+    @Test
+    void shouldCalculateFundValue() throws Exception {
+        Fund fund = buildFund();
+        Double initialInvestment = 2000.0;
+        Integer years = 3;
+
+        when(fundService.calculateFundValue(1, initialInvestment, years)).thenReturn(1500.0);
+
+        mockMvc.perform(get("/mutual-funds/calculate/return")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", header)
+                .param("fundId", "1")
+                .param("initialInvestment", "2000.0")
+                .param("years", "3"))
+                .andExpect(status().isOk());
+    }
+
+    private Fund buildFund() {
+        return new Fund(1, "SBI Blue Chip Fund", "SBI Mutual Fund", "High", "Debt", 100000000.0, 79.3, "Jane Doe", "A long-term growth oriented fund", 3.9, null, null, null);
+    }
+
+    private FundDescriptionDTO buildFundDescriptionDTO() {
+        return new FundDescriptionDTO(1, "SBI Blue Chip Fund", "SBI Mutual Fund", "High", "Debt", 100000000.0, 79.3, "Jane Doe", "A long-term growth oriented fund", 3.9, null, null, null);
+    }
+
+    private DashBoardFundProjection buildDashBoardFundProjection() {
+        return new DashBoardFundProjection() {
+            @Override
+            public Integer getFundId() {
+                return 1;
+            }
+
+            @Override
+            public String getFundName() {
+                return "SBI Blue Chip Fund";
+            }
+
+            @Override
+            public String getFundAMC() {
+                return "SBI Mutual Fund";
+            }
+
+            @Override
+            public String getFundRisk() {
+                return "High";
+            }
+
+            @Override
+            public Double getFundNAV() {
+                return 21.0;
+            }
+
+            @Override
+            public String getFundType() {
+                return "Debt";
+            }
+
+            @Override
+            public Double getFundAUM() {
+                return 10000.0;
+            }
+
+            @Override
+            public Double getFundRating() {
+                return 3.7;
+            }
+
+            @Override
+            public DashBoardFundReturnProjection getFundReturn() {
+                return buildDashBoardFundReturnProjection();
+            }
+        };
+    }
+
+    private DashBoardFundProjection.DashBoardFundReturnProjection buildDashBoardFundReturnProjection() {
+        return new DashBoardFundProjection.DashBoardFundReturnProjection() {
+            @Override
+            public Float getFundReturn1Year() {
+                return 20.6f;
+            }
+
+            @Override
+            public Float getFundReturn3Year() {
+                return 61.4f;
+            }
+
+            @Override
+            public Float getFundReturn5Year() {
+                return 90.6f;
+            }
+        };
     }
 }

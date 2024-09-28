@@ -92,15 +92,10 @@ export class FundService {
 
   calculateFundReturn(fundId: number, initialAmount: number, timePeriod: number): Observable<any> {
     const headers = this.authService.getRequestHeaders()
-    let fund: FundInformation = {
-      fundId: fundId,
-      fundName: '',
-      fundType: ''
-    }
 
-    let params = new HttpParams().set('initialInvestment', initialAmount).set('years', timePeriod)
+    let params = new HttpParams().set('fundId', fundId).set('initialInvestment', initialAmount).set('years', timePeriod)
 
-    return this.http.post<any>("http://localhost:8080/mutual-funds/fund-calculator", fund, {params, headers}).pipe(
+    return this.http.get<any>("http://localhost:8080/mutual-funds/calculate/return", {params, headers}).pipe(
       map(response => {
         if(response) {
           return {data: response}
@@ -118,7 +113,7 @@ export class FundService {
 
   initiateTransaction(transaction: UserFunds): Observable<any> {
     const headers = this.authService.getRequestHeaders()
-    return this.http.post<any>(`http://localhost:8080/mutual-finds/user/investment`, transaction, {headers}).pipe(
+    return this.http.post<any>(`http://localhost:8080/mutual-funds/user/investment`, transaction, {headers}).pipe(
       map(response => {
         this.investmentSuccessfull = true
       }),

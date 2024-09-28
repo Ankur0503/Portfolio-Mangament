@@ -1,6 +1,6 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.CartProjection;
+import ideas.capstone_pm.projection.CartProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

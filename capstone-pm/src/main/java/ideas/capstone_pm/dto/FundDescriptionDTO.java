@@ -1,6 +1,7 @@
 package ideas.capstone_pm.dto;
 
-import ideas.capstone_pm.entity.FundReturn;
+import ideas.capstone_pm.projection.AverageReturnProjection;
+import ideas.capstone_pm.projection.PeerFundsProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class FundDescriptionDTO {
     private String fundDescription;
     private double fundRating;
     private FundHistoryDTO fundHistory;
-    private List<PeerFundsDTO> peerFunds;
-    private AverageReturnDTO averageReturnDTO;
+    private List<PeerFundsProjection> peerFunds;
+    private AverageReturnProjection averageReturnProjection;
 }

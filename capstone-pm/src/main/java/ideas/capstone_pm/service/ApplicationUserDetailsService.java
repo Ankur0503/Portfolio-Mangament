@@ -1,7 +1,7 @@
 package ideas.capstone_pm.service;
 
-import ideas.capstone_pm.dto.AdminDTO;
-import ideas.capstone_pm.dto.UserProjection;
+import ideas.capstone_pm.projection.AdminProjection;
+import ideas.capstone_pm.projection.UserProjection;
 import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.repository.AdminRepository;
 import ideas.capstone_pm.repository.UserRepository;
@@ -29,7 +29,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
                     .build();
         }
         if (adminRepository.existsByAdminEmail(username)) {
-            AdminDTO admin = adminRepository.findByAdminEmail(username);
+            AdminProjection admin = adminRepository.findByAdminEmail(username);
             return org.springframework.security.core.userdetails.User.builder()
                     .username(admin.getAdminEmail())
                     .password(admin.getAdminPassword())

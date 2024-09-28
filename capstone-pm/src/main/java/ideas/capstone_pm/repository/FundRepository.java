@@ -1,7 +1,7 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.DashBoardFundProjection;
-import ideas.capstone_pm.dto.PeerFundsDTO;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
+import ideas.capstone_pm.projection.PeerFundsProjection;
 import ideas.capstone_pm.entity.Fund;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,7 +24,7 @@ public interface FundRepository extends CrudRepository<Fund, Integer> {
     @Query(value = "select distinct f.fund_Risk from Fund f", nativeQuery = true)
     List<String> findAllDistinctFundRisks();
 
-    List<PeerFundsDTO> findByFundTypeAndFundIdNotIn(String fundType, List<Integer> fundIds);
+    List<PeerFundsProjection> findByFundTypeAndFundIdNotIn(String fundType, List<Integer> fundIds);
     List<DashBoardFundProjection> findBy();
     Boolean existsByFundId(int fundId);
 }

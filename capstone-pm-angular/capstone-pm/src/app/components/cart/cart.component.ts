@@ -49,4 +49,17 @@ export class CartComponent {
   ngOnDestroy() {
     this.authService.inCartPage = false
   }
+
+  onProceedToPay() {
+    this.cartService.processCartToPay(this.authService.userProfile.user.userId).subscribe(response => {
+      this.fetchAllCarts()
+      this.hideAlertAfterDelay()
+    })
+  }
+
+  private hideAlertAfterDelay(): void {
+    setTimeout(() => {
+      this.cartService.isInvestmentSuccess = false
+    }, 2000); 
+  }
 }

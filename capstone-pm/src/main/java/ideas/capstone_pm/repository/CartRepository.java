@@ -1,12 +1,10 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.CartProjection;
-import ideas.capstone_pm.dto.TotalCartAmountProjection;
+import ideas.capstone_pm.projection.CartProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Cart;
 import ideas.capstone_pm.entity.Fund;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

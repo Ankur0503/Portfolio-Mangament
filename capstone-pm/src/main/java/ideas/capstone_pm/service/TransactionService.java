@@ -1,8 +1,8 @@
 package ideas.capstone_pm.service;
 
-import ideas.capstone_pm.dto.FundReturnDTO;
+import ideas.capstone_pm.projection.FundReturnProjection;
 import ideas.capstone_pm.dto.TransactionDTO;
-import ideas.capstone_pm.dto.TransactionProjection;
+import ideas.capstone_pm.projection.TransactionProjection;
 import ideas.capstone_pm.dto.TransactionResponseDTO;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Fund;
@@ -52,8 +52,8 @@ public class TransactionService {
         Fund fund = new Fund();
         fund.setFundId(transactionProjection.getFund().getFundId());
 
-        FundReturnDTO fundReturnDTO = fundReturnRepository.findByFund(fund);
-        Double currentValue = calculateCurrentValue(transactionProjection.getTransactionInitialInvestment(), fundReturnDTO.getFundReturnTotal());
+        FundReturnProjection fundReturnProjection = fundReturnRepository.findByFundFundId(fund.getFundId());
+        Double currentValue = calculateCurrentValue(transactionProjection.getTransactionInitialInvestment(), fundReturnProjection.getFundReturnTotal());
 
         TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();
         transactionResponseDTO.setTransactionProjection(transactionProjection);

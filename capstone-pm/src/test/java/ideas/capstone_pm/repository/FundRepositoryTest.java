@@ -1,7 +1,7 @@
 package ideas.capstone_pm.repository;
 
-import ideas.capstone_pm.dto.DashBoardFundProjection;
-import ideas.capstone_pm.dto.PeerFundsDTO;
+import ideas.capstone_pm.projection.DashBoardFundProjection;
+import ideas.capstone_pm.projection.PeerFundsProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -117,7 +117,7 @@ public class FundRepositoryTest {
     @Test
     void findByFundTypeAndFundIdNotIn() {
         List<Integer> excludedFundIds = List.of(FUND_ID);
-        List<PeerFundsDTO> result = fundRepository.findByFundTypeAndFundIdNotIn(FUND_TYPE_EQUITY, excludedFundIds);
+        List<PeerFundsProjection> result = fundRepository.findByFundTypeAndFundIdNotIn(FUND_TYPE_EQUITY, excludedFundIds);
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(10);

@@ -1,6 +1,6 @@
-package ideas.capstone_pm.dto.authentication;
+package ideas.capstone_pm.dto;
 
-import ideas.capstone_pm.dto.UserProjection;
+import ideas.capstone_pm.projection.UserProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

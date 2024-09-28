@@ -1,6 +1,6 @@
-package ideas.capstone_pm.dto;
+package ideas.capstone_pm.projection;
 
-public interface AverageReturnDTO {
+public interface AverageReturnProjection {
     Double getAverage1YearReturn();
     Double getAverage3YearReturn();
     Double getAverageTotalReturn();

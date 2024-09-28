@@ -1,8 +1,8 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.LoginDTO;
-import ideas.capstone_pm.dto.UserProjection;
-import ideas.capstone_pm.dto.authentication.AuthenticationResponse;
+import ideas.capstone_pm.projection.UserProjection;
+import ideas.capstone_pm.dto.AuthenticationResponse;
 import ideas.capstone_pm.repository.UserRepository;
 import ideas.capstone_pm.util.JwtUtil;
 import org.junit.jupiter.api.Test;

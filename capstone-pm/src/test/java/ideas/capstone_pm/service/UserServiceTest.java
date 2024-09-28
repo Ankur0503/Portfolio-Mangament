@@ -1,10 +1,9 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.UserDTO;
-import ideas.capstone_pm.dto.UserProjection;
+import ideas.capstone_pm.projection.UserProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.exception.userexpcetions.EmailAlreadyRegisteredException;
-import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.repository.UserRepository;
 import ideas.capstone_pm.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +54,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void addUserSuccess() {
+    void shouldAddUserSuccess() {
         ApplicationUser applicationUser = createApplicationUser();
         when(userRepository.existsByUserEmail(TEST_EMAIL)).thenReturn(false);
         when(passwordEncoder.encode(TEST_PASSWORD)).thenReturn(ENCODED_PASSWORD);
@@ -68,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void addUserEmailAlreadyRegistered() {
+    void shouldAddUserEmailAlreadyRegistered() {
         ApplicationUser applicationUser = createApplicationUser();
         when(userRepository.existsByUserEmail(TEST_EMAIL)).thenReturn(true);
 
@@ -77,7 +76,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void testUpdateUserSuccess() {
+    void shouldUpdateUserSuccess() {
         UserDTO userDTO = createUserDTO();
         ApplicationUser existingUser = createExistingUser();
 
@@ -89,6 +88,60 @@ public class UserServiceTest {
 
         assertUpdateUserSuccess(updatedUser);
         verifyUpdateUserSuccess(userDTO);
+    }
+
+    @Test
+    void shouldGetCurrentUser() {
+        String authorizationHeader = "Bearer mockJwtToken";
+
+        String username = "test@gmail.com";
+        when(jwtUtil.extractUsername(any(String.class))).thenReturn(username);
+
+        UserProjection expectedUser = buildUserProjection();
+        when(userRepository.findByUserEmail(username)).thenReturn(expectedUser);
+
+        UserProjection actualUser = userService.getCurrentUser(authorizationHeader);
+        assertNotNull(actualUser);
+        assertEquals(expectedUser, actualUser);
+    }
+
+    private UserProjection buildUserProjection() {
+        return new UserProjection() {
+            @Override
+            public Integer getUserId() {
+                return 1;
+            }
+
+            @Override
+            public String getUserName() {
+                return "testUser";
+            }
+
+            @Override
+            public String getUserEmail() {
+                return "test@gmail.com";
+            }
+
+            @Override
+            public String getUserPassword() {
+                return "Test@12345";
+            }
+
+            @Override
+            public String getUserPhone() {
+                return "0987654321";
+            }
+
+            @Override
+            public Integer getUserAge() {
+                return 30;
+            }
+
+            @Override
+            public String getUserRole() {
+                return "USER";
+            }
+        };
     }
 
     private ApplicationUser createApplicationUser() {

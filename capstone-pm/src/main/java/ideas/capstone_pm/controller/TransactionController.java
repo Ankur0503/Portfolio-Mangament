@@ -1,13 +1,9 @@
 package ideas.capstone_pm.controller;
 
 import ideas.capstone_pm.dto.TransactionDTO;
-import ideas.capstone_pm.dto.TransactionProjection;
 import ideas.capstone_pm.dto.TransactionResponseDTO;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Transaction;
-import ideas.capstone_pm.repository.FundRepository;
-import ideas.capstone_pm.repository.TransactionRepository;
-import ideas.capstone_pm.repository.UserRepository;
 import ideas.capstone_pm.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +28,7 @@ public class TransactionController {
         return transactionService.getTransactionByUserAndFund(user, fundId);
     }
 
-    @PostMapping("mutual-finds/user/investment")
+    @PostMapping("mutual-funds/user/investment")
     public TransactionDTO addTransaction(@RequestBody Transaction transaction) {
         return transactionService.addTransaction(transaction);
     }
