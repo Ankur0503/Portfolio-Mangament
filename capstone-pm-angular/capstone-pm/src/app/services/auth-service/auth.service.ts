@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { User } from 'src/app/models/user-model/user';
 import { UserCredentials } from 'src/app/models/user-model/user-credentials';
 import { UserResponse } from 'src/app/models/user-model/user-response';
@@ -42,6 +42,10 @@ export class AuthService {
     return this.http.post<any>("http://localhost:8080/users", user).pipe(
       map(response => {
         return {data: response}
+      }),
+      catchError(error => {
+        alert(error.error)
+        return throwError(error);
       })
     );
   }
@@ -76,6 +80,10 @@ export class AuthService {
         return {data: response}
       }),
       catchError(error => {
+        if(error.status === 200) {
+          alert("Profile Updated Successfully")
+          return of(null)
+        }
         return throwError(error)
       })
     )

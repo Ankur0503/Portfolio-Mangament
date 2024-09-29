@@ -45,9 +45,6 @@ export class SignupComponent {
     }
     this.authService.register(user).subscribe(response => {
       this.router.navigateByUrl("/signin")
-    },
-    err => {
-      console.error('SignUp Failed', err)
     })
   }
 }

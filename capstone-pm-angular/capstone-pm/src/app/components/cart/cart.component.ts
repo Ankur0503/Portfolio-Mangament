@@ -41,7 +41,6 @@ export class CartComponent {
       this.fetchAllCarts()
     }),
     catchError(error => {
-      console.log(error)
       return throwError(error)
     })
   }

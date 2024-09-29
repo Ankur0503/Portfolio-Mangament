@@ -3,10 +3,10 @@
     <div class="card-body">
       <h5 class="card-title">Investment Summary</h5>
       <p class="card-text">
-        <span class="fw-bold">Invested Value:</span> ₹{{ investedValue }}
+        <span class="fw-bold">Invested Value:</span> ₹{{ investedValue | number }}
       </p>
       <p class="card-text">
-        <span class="fw-bold">Current Returns:</span> ₹{{ currentReturns }} ({{ currentReturnsPercentage }}%)
+        <span class="fw-bold">Current Returns:</span> ₹{{ currentReturns.toFixed(2) | number }} ({{ currentReturnsPercentage }}%)
       </p>
     </div>
   </div>

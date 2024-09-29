@@ -120,7 +120,6 @@ public class UserServiceTest {
 
     @Test
     public void shouldThrowEmailNotFound() {
-        // Arrange
         String authorizationHeader = "Bearer valid-jwt";
         String jwt = "valid-jwt";
         String username = "unknown@example.com";

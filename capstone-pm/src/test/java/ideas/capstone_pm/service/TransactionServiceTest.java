@@ -66,7 +66,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetFundByUser() {
+    void shouldGetFundByUser() {
         ApplicationUser user = createUser();
         List<TransactionProjection> mockTransactions = MockUtils.mockTransactionProjectionsList();
         FundReturnProjection mockedFundReturnProjection = createMockFundReturnDTO();
@@ -81,7 +81,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void getTransactionByUserAndFund() {
+    void shouldGetTransactionByUserAndFund() {
         ApplicationUser user = buildApplicationUser();
         Transaction expectedTransaction = buildTransaction();
         TransactionDTO expectedTransactionDTO = buildTransactionDTO();
@@ -96,7 +96,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testAddTransaction() {
+    void shouldAddTransaction() {
         ApplicationUser user = buildApplicationUser();
         Transaction expectedTransaction = buildTransaction();
         TransactionDTO expectedTransactionDTO = buildTransactionDTO();

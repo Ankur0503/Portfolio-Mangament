@@ -56,7 +56,7 @@ public class CartServiceTest {
     }
 
     @Test
-    void getCartsByUser() {
+    void shouldGetCartsByUser() {
         ApplicationUser user = new ApplicationUser(1, "John Doe", "johndoe@example.com", "password123", "1234567890", 30, "USER", null, null);
         List<CartProjection> expectedCarts = MockUtils.mockCartProjectionList();
         when(cartRepository.findByUser(any(ApplicationUser.class))).thenReturn(expectedCarts);
@@ -68,7 +68,6 @@ public class CartServiceTest {
 
     @Test
     public void shouldThrowCartNotFoundExceptionWhenErrorOccurs() {
-        // Given
         int userId = 1;
         ApplicationUser user = new ApplicationUser();
         user.setUserId(userId);

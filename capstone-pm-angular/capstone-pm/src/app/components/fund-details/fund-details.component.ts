@@ -104,7 +104,6 @@ export class FundDetailsComponent {
         this.fundId = +fundId
         this.fundService.retrieveFundById(this.fundId).subscribe(response => {
           Object.assign(this.fundDescription, response.data)
-          console.log(this.fundDescription)
           Object.assign(this.fundHistoryData, response.data.fundHistory)
           this.createChart()
         })

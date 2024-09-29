@@ -49,7 +49,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void getAllFilters() {
+    void shouldGetAllFilters() {
         List<String> mockFundAMCs = createMockFundAMCs();
         List<String> mockFundRisks = createMockFundRisks();
 
@@ -64,7 +64,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void getAllFunds() {
+    void shouldGetAllFunds() {
         List<DashBoardFundProjection> expectedFunds = MockUtils.mockFundProjectionsList();
         when(fundRepository.findBy()).thenReturn(expectedFunds);
 
@@ -81,7 +81,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void getFundById() {
+    void shouldGetFundById() {
         Fund expectedFund = buildFund();
         FundDescriptionDTO expectedFundDescriptionDTO = buildFundDescriptionDTO();
 
@@ -96,7 +96,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void addFund() {
+    void shouldAddFund() {
         Fund expectedFund = buildFund();
         FundDescriptionDTO expectedFundDescriptionDTO = buildFundDescriptionDTO();
 
@@ -109,7 +109,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void getFundsByFilter() {
+    void shouldGetFundsByFilter() {
         List<String> validFundAMCs = createMockFundAMCs();
         List<String> validFundRisks = createMockFundRisks();
         double validFundAUM = 10_000.00;
@@ -134,7 +134,7 @@ public class FundServiceTest {
     }
 
     @Test
-    void calculateFundValue() {
+    void shouldCalculateFundValue() {
         FundReturnProjection mockedFundReturnProjection = MockUtils.mockFundReturnProjection(2.0, 12.5, 38.7, 75.4, 250.4, 1, "SBI BlueChip Fund", "Equity");
         Fund mockedFund = buildFund();
         Double expectedFundValue = 1660152.3524741023;

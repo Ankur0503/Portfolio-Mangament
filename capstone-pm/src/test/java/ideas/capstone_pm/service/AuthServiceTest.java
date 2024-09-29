@@ -36,7 +36,7 @@ public class AuthServiceTest {
     private AuthService authService;
 
     @Test
-    public void authenticate() {
+    public void shouldAuthenticate() {
         String email = "test@example.com";
         String password = "password";
         LoginDTO loginRequest = new LoginDTO(email, password);
@@ -56,7 +56,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void testAuthenticateFailure() {
+    void shouldNotAuthenticateWithInvalidCredentials() {
         String email = "test@example.com";
         String password = "wrongPassword";
         LoginDTO loginRequest = new LoginDTO(email, password);

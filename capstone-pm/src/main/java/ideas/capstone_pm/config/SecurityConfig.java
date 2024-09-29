@@ -28,7 +28,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/h2-console/**")
                         .disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/register", "/auth/login", "/users", "/filters", "/mutual-funds/calculate/return", "/user/cart/process", "mutual-funds", "mutual-funds/user/investment/{fundId}", "/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/admin/register", "/auth/login", "/users", "/filters", "/mutual-funds", "/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/mutual-funds/add", "/fund-returns").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                 )
