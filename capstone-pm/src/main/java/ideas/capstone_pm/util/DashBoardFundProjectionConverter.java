@@ -1,4 +1,4 @@
-package ideas.capstone_pm.service;
+package ideas.capstone_pm.util;
 
 import ideas.capstone_pm.dto.DashBoardFundDTO;
 import ideas.capstone_pm.projection.DashBoardFundProjection;

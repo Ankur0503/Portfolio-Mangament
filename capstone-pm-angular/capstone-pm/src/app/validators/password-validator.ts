@@ -5,11 +5,11 @@ export function validatePassword(): ValidatorFn {
         const password: string = control.value || '';
     
         if (!password) {
-            return null;  // Return null if password is empty or not provided
+            return null;
         }
     
         if (password.length < 8) {
-            return null;  // No validation errors for passwords shorter than 8 characters
+            return null;
         }
     
         const hasLowercase = /[a-z]/.test(password);

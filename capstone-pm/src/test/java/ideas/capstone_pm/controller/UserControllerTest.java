@@ -62,7 +62,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", header)
                 .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @WithMockUser(username = "test@gmail.com", roles = {"USER"})

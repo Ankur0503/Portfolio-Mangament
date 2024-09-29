@@ -1,17 +1,14 @@
-
-/* General container styling */
 .container {
-    background-color: #f0f0f0; /* White background for the container */
-    border-radius: 8px; /* Rounded corners */
+    background-color: #f0f0f0;
+    border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 6rem;
 }
 
-/* Header styling */
 h2, h3, h4, h5 {
-    color: #333333; /* Darker text for headings */
-    margin-bottom: 15px; /* Spacing below headings */
+    color: #333333;
+    margin-bottom: 15px;
 }
 
 h2 {
@@ -20,7 +17,7 @@ h2 {
 
 h3 {
     font-size: 1.25rem;
-    color: #4CAF50; /* success blue color for emphasis */
+    color: #4CAF50;
 }
 
 h4 {
@@ -29,10 +26,9 @@ h4 {
 
 h5 {
     font-size: 1rem;
-    color: #555555; /* Slightly lighter text for subheadings */
+    color: #555555;
 }
 
-/* Badge styling */
 .badge {
     font-size: 18px;
     background-color: transparent;
@@ -42,90 +38,85 @@ h5 {
     margin: 0.25rem;
 }
 
-
 .bg-success {
     background-color: rgb(34 95 187 / 64%) !important;
-    color: #ffffff; /* White text */
+    color: #ffffff;
 }
 
 .bg-danger {
     background-color: rgb(232 22 42 / 62%) !important;
-    color: #ffffff; /* White text */
+    color: #ffffff;
 }
 
-/* Fund details styling */
 .text-muted {
-    color: #6c757d; /* Bootstrap muted color */
+    color: #6c757d;
 }
 
 .text-success {
-    color: #4CAF50; /* Bootstrap success blue */
+    color: #4CAF50;
 }
 
 .text-success {
-    color: #28a745; /* Bootstrap success green */
+    color: #28a745;
 }
 
 .text-success .bi-star {
-  color: lightgray; /* Default star color */
+    color: lightgray;
 }
 
 canvas {
     max-height: 400px;
-  }
+}
 
-#fundChart{
+#fundChart {
     width: 100%;
     height: 100%;
-  }
+}
 
 .icon-sm {
-    font-size: 1rem; /* Adjust this value as needed */
-    vertical-align:middle; /* Aligns the icon with the text */
-  }
-  
-.text-success{
-  color: blue; /* Color for filled stars */
-    }
+    font-size: 1rem;
+    vertical-align: middle;
+}
 
-.bi-star-fill{
+.text-success {
+    color: blue;
+}
+
+.bi-star-fill {
     color: #eeca18;
 }
 
-/* Form control styling */
 .form-control, .form-select {
-    border-radius: 4px; /* Rounded corners */
-    border-color: #ced4da; /* Light grey border */
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075); /* Inner shadow */
+    border-radius: 4px;
+    border-color: #ced4da;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
 }
 
-/* Button styling */
 .btn-success {
-    background-color: #4CAF50; /* success blue color */
-    border-color: #4CAF50; /* Border color */
+    background-color: #4CAF50;
+    border-color: #4CAF50;
 }
 
 .btn-success:hover {
-    background-color: #2e8331; /* Darker blue for hover effect */
-    border-color: #4CAF50; /* Darker border color */
+    background-color: #2e8331;
+    border-color: #4CAF50;
 }
 
-/* Table styling */
 .table {
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
-    border-collapse: collapse; /* Ensures borders collapse for a cleaner look */
+    border-collapse: collapse;
 }
 
 .table thead th {
-    background-color: #f8f9fa; /* Light grey background for table headers */
-    color: #495057; /* Darker text color for readability */
+    background-color: #f8f9fa;
+    color: #495057;
     padding: 0.75rem;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid #dee2e6; /* Light grey border for table rows */
+    border-bottom: 1px solid #dee2e6;
 }
 
 .table tbody td, .table tbody th {
@@ -134,21 +125,20 @@ canvas {
 }
 
 .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Alternating row color for better readability */
+    background-color: #f9f9f9;
 }
 
 .table tbody tr:hover {
-    background-color: #e9ecef; /* Light grey background on hover */
+    background-color: #e9ecef;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
         padding: 15px;
     }
 
     .table {
-        font-size: 0.875rem; /* Slightly smaller text for smaller screens */
+        font-size: 0.875rem;
     }
 
     h2 {

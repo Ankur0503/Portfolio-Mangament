@@ -59,7 +59,7 @@
           <div class="col-md-4">
             <p class="text-muted">Fund Size:</p>
             <h4 class="text-success">
-              ₹{{ fundDescription.fundAUM | number }}
+              ₹{{ (fundDescription.fundAUM / 10000000).toFixed(2) | number }}Cr
             </h4>
           </div>
         </div>
@@ -70,7 +70,7 @@
             <div class="col-md-6">
               <label for="initialAmount">Initial Amount:</label>
               <input type="number" class="form-control" id="initialAmount" name="initialAmount"
-                [(ngModel)]="initialAmount" #initialAmountRef="ngModel" min="1000" placeholder="Enter initial amount"
+                [(ngModel)]="initialAmount" #initialAmountRef="ngModel" min="1000" (input)="onInitialAmountChange($event)" placeholder="Enter initial amount"
                 required />
               <div *ngIf="initialAmountRef.invalid && initialAmountRef.touched" class="text-danger">
                 <div *ngIf="initialAmountRef.errors?.['required']">
@@ -81,30 +81,31 @@
                 </div>
               </div>
             </div>
-
+        
             <div class="col-md-6">
               <label for="timePeriod">Time Period:</label>
               <select class="form-select" id="timePeriod" name="timePeriod" [(ngModel)]="timePeriod"
                 #timePeriodRef="ngModel" required>
-                <option value="" disabled selected>Select a period</option>
+                <option value="" disabled>Select a period</option>
                 <option value="1">1 Year</option>
                 <option value="3">3 Years</option>
                 <option value="5">5 Years</option>
               </select>
-              <div *ngIf="timePeriodRef.invalid && timePeriodRef.touched" class="text-danger">
+              <div *ngIf="(timePeriodRef.invalid && timePeriodRef.touched)" class="text-danger">
                 Please select a time period.
               </div>
             </div>
           </div>
-
+        
           <div class="row mt-3">
             <div class="col-md-12 text-center">
-              <button type="submit" class="btn btn-success" id="calculateButton" [disabled]="form.invalid">
+              <button type="submit" class="btn btn-success" id="calculateButton" [disabled]="form.invalid || timePeriod === 0">
                 Calculate
               </button>
             </div>
           </div>
         </form>
+        
 
         <div class="row mt-3">
           <div class="row justify-content-center">
@@ -157,19 +158,19 @@
               <th scope="row">Category average</th>
               <td>
                 {{
-                fundDescription.averageReturnDTO.average1YearReturn
+                fundDescription.averageReturnProjection.average1YearReturn
                 | number : "2.2-2"
                 }}%
               </td>
               <td>
                 {{
-                fundDescription.averageReturnDTO.average3YearReturn
+                fundDescription.averageReturnProjection.average3YearReturn
                 | number : "2.2-2"
                 }}%
               </td>
               <td>
                 {{
-                fundDescription.averageReturnDTO.averageTotalReturn
+                fundDescription.averageReturnProjection.averageTotalReturn
                 | number : "2.2-2"
                 }}%
               </td>
@@ -195,7 +196,7 @@
               <td>{{ peerFund.fundRating | number : "1.0-0" }}★</td>
               <td>{{ peerFund.fundReturn.fundReturn1Year }}%</td>
               <td>{{ peerFund.fundReturn.fundReturn3Year }}%</td>
-              <td>{{ peerFund.fundAUM | number }}</td>
+              <td>₹{{ (peerFund.fundAUM / 10000000).toFixed(2) | number }}Cr</td>
             </tr>
           </tbody>
         </table>
@@ -213,10 +214,10 @@
               <div class="input-group">
                 <div class="input-group-prepend"></div>
                 <input type="number" class="form-control" id="amount" placeholder="Enter amount"
-       [(ngModel)]="investmentAmount" min="1000" (input)="onInputChange($event)" />
+       [(ngModel)]="investmentAmount" min="1000" (input)="onInvestmentAmountChange($event)" />
               </div>
             </div>
-            <div *ngIf="errorFlag" class="alert alert-danger">
+            <div *ngIf="errorFlag" class="alert alert-danger mt-2">
               Min Investment: 1000
             </div>
           </div>

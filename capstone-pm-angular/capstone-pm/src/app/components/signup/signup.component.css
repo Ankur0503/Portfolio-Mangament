@@ -1,12 +1,9 @@
-/* Add this to your global styles.css or a specific component stylesheet */
-
-
 .right_img, 
 .card {
-    width: 100%; /* Full width of the column */
-    max-width: 500px; /* Max width for the card */
-    margin: 0 auto; /* Center horizontally */
-    border-radius: 15px; /* Rounded corners */
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 15px;
 }
 
 .row {
@@ -22,19 +19,16 @@
     color: #343a40;
 }
 
-/* Form Control Styling */
 .form-control {
     border-radius: 5px;
     box-shadow: none;
     border: 1px solid #ced4da;
 }
 
-/* Invalid Feedback Styling */
 .invalid-feedback {
     display: block;
 }
 
-/* Button Styling */
 .btn-success {
     background-color: #4CAF50;
     border-color: #4CAF50;

@@ -5,7 +5,7 @@ export function validatePhone(): ValidatorFn {
         const value = control.value;
 
         if (!value) {
-            return null; // If no value, don't apply numeric validation. Let required handle it if needed.
+            return null;
         }
 
         const isNumeric = /^[0-9]*$/.test(value);

@@ -7,48 +7,59 @@ import ideas.capstone_pm.projection.CartProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.entity.Cart;
 import ideas.capstone_pm.service.CartService;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/user/cart")
 public class CartController {
+
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/user/cart")
-    public Cart addCart(@RequestBody AddToCartDTO addToCartDTO) {
-        if(addToCartDTO.getFund() == null) {
+    @PostMapping
+    public ResponseEntity<Cart> addCart(@RequestBody AddToCartDTO addToCartDTO) {
+        if (addToCartDTO.getFund() == null) {
             throw new FundNotFoundException();
         }
-        if(addToCartDTO.getUser() == null) {
+        if (addToCartDTO.getUser() == null) {
             throw new EmailNotFound();
         }
-        return cartService.addCart(addToCartDTO);
+        Cart newCart = cartService.addCart(addToCartDTO);
+        return new ResponseEntity<>(newCart, HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/cart")
-    public List<CartProjection> getAllCarts(@RequestParam Integer userId) {
-        return cartService.getCartsByUser(userId);
+    @GetMapping
+    public ResponseEntity<List<CartProjection>> getAllCarts(@RequestParam Integer userId) {
+        List<CartProjection> carts = cartService.getCartsByUser(userId);
+        return new ResponseEntity<>(carts, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/cart")
-    public void deleteCartByCartId(@RequestParam Integer cartId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCartByCartId(@RequestParam Integer cartId) {
         cartService.deleteCartByCartId(cartId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/user/cart/total")
-    public double computeTotalAmountInCart(@RequestBody ApplicationUser user) {
-        return cartService.computeTotalAmountInCart(user);
+    @GetMapping("/total")
+    public ResponseEntity<Double> computeTotalAmountInCart(@RequestBody ApplicationUser user) {
+        if (user == null) {
+            throw new EmailNotFound();
+        }
+        double totalAmount = cartService.computeTotalAmountInCart(user);
+        return new ResponseEntity<>(totalAmount, HttpStatus.OK);
     }
 
-    @PostMapping("/user/cart/process")
-    public void proceedToPay(@RequestBody ApplicationUser user) {
-        if(user == null) {
+    @PostMapping("/process")
+    public ResponseEntity<Void> proceedToPay(@RequestBody ApplicationUser user) {
+        if (user == null) {
             throw new EmailNotFound();
         }
         cartService.processCart(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

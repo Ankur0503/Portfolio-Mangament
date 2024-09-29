@@ -11,7 +11,6 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 export const guard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
-  // some auth logic
   return inject(AuthService).canActivate()
 }
 

@@ -1,77 +1,72 @@
-/* Navbar Styling */
 .navbar-custom {
-    background-color: #4CAF50; /* Navbar background color */
-    border-bottom: 2px solid #388E3C; /* Border for emphasis */
-    padding: 0.5rem 1rem; /* Adjust padding as needed */
+    background-color: #4CAF50;
+    border-bottom: 2px solid #388E3C;
+    padding: 0.5rem 1rem;
 }
 
 .navbar-custom .navbar-brand {
-    color: #fff; /* Brand text color */
+    color: #fff;
     font-weight: bold;
     font-size: 1.5rem;
 }
 
 .navbar-custom .navbar-toggler {
-    border-color: #fff; /* Toggler button border color */
+    border-color: #fff;
 }
 
 .navbar-custom .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDE4IDE4Ij48cmVjdCB4PSIwIiB5PSI3IiB3aWR0aD0iMTgiIGhlaWdodD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDAsMEwgMTggOCBMIDAsOCAiIGZpbGw9IiMwMDAiLz48L3N2Zz4=");
 }
 
-/* Nav Links */
 .navbar-custom .nav-link {
-    color: #fff; /* Nav link text color */
-    margin-right: 1rem; /* Space between links */
+    color: #fff;
+    margin-right: 1rem;
 }
 
 .navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
-    color: #E8F5E9; /* Color for hover and active state */
-    text-decoration: underline; /* Underline on hover and active */
+    color: #E8F5E9;
+    text-decoration: underline;
 }
 
-/* Search Form Styling */
 .navbar-custom .search-form {
-    max-width: 500px; /* Maximum width of the form container */
-    width: 100%; /* Full width of the parent container */
+    max-width: 500px;
+    width: 100%;
 }
 
 .navbar-custom .search-input {
-    border-radius: 20px; /* Rounded corners */
-    padding: 0.5rem 1rem; /* Padding inside the input */
-    border: 1px solid #ccc; /* Border color */
-    max-width: 300px; /* Maximum width of the input field */
-    width: 100%; /* Full width of the parent container */
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    max-width: 300px;
+    width: 100%;
 }
 
 .navbar-custom .search-btn {
-    border-radius: 20px; /* Match button corners with input field */
-    border: 1px solid #fff; /* Button border color */
-    color: #fff; /* Text color */
-    padding: 0.5rem 1rem; /* Padding inside the button */
+    border-radius: 20px;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 0.5rem 1rem;
 }
 
 .navbar-custom .search-btn:hover {
-    background-color: #fff; /* Button background on hover */
-    color: #4CAF50; /* Text color on hover */
+    background-color: #fff;
+    color: #4CAF50;
 }
 
-/* Ensure the dropdown menu is positioned absolutely and centered */
 .dropdown-menu {
-    position: absolute; /* Position relative to the nearest positioned ancestor */
-    top: 100%; /* Position it below the toggle element */
-    left: 50%; /* Start from the middle */
-    transform: translateX(-60%); /* Shift it left by half its width */
-    z-index: 1000; /* Ensure it appears above other elements */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-60%);
+    z-index: 1000;
 }
 
-/* Optional: Add some styling for the dropdown items */
 .dropdown-item {
-    text-align: center; /* Center align text in dropdown items */
+    text-align: center;
 }
 
 .dropdown-item.active, .dropdown-item:active {
     color: var(--bs-dropdown-link-active-color);
     text-decoration: none;
-    background-color:#4CAF50;
+    background-color: #4CAF50;
 }

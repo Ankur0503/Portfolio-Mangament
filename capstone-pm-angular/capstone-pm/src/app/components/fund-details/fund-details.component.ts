@@ -20,14 +20,13 @@ export class FundDetailsComponent {
 
   fundId: number;
   fundDescription: FundDescription
-  initialAmount: number
+  initialAmount: number = 0
   timePeriod: number
   currentReturn = new BehaviorSubject<number>(0)
   increasePercentage: number
   investmentAmount: number
   chart: Chart | undefined
   errorFlag: boolean = false
-
   fundHistoryData = {
     fundReturn1Month: 2,
     fundReturn1Year: 12.5,
@@ -40,7 +39,6 @@ export class FundDetailsComponent {
   constructor(public fundService: FundService, public router: Router, public route: ActivatedRoute, public authService: AuthService, public cartService: CartService) {
     this.fundId = 0
     this.fundDescription = new FundDescription()
-    this.initialAmount = 0
     this.timePeriod = 0
     this.increasePercentage = 0
     this.investmentAmount = 0
@@ -58,14 +56,15 @@ export class FundDetailsComponent {
     this.chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['1 Month', '1 Year', '3 Years', '5 Years'],
+        labels: ['1 Month', '1 Year', '3 Years', '5 Years', 'Total'],
         datasets: [{
           label: 'Fund Returns (%)',
           data: [
             this.fundHistoryData.fundReturn1Month,
             this.fundHistoryData.fundReturn1Year,
             this.fundHistoryData.fundReturn3Year,
-            this.fundHistoryData.fundReturn5Year
+            this.fundHistoryData.fundReturn5Year,
+            this.fundHistoryData.fundReturnTotal
           ],
           borderColor: '#4CAF50',
           borderWidth: 2,
@@ -105,6 +104,7 @@ export class FundDetailsComponent {
         this.fundId = +fundId
         this.fundService.retrieveFundById(this.fundId).subscribe(response => {
           Object.assign(this.fundDescription, response.data)
+          console.log(this.fundDescription)
           Object.assign(this.fundHistoryData, response.data.fundHistory)
           this.createChart()
         })
@@ -121,9 +121,30 @@ export class FundDetailsComponent {
     }
   }
 
-  onInputChange(event: any): void {
-    const inputValue = event.target.value;
-    event.target.value = inputValue.replace(/[^0-9]/g, '0');
+  onInitialAmountChange(event: any): void {
+    let inputValue = event.target.value;
+
+    inputValue = inputValue.replace(/[^0-9]/g, '');
+
+    if (inputValue.length > 1 && inputValue.startsWith('0')) {
+        inputValue = inputValue.substring(1);
+    }
+    event.target.value = inputValue;
+
+    this.initialAmount = inputValue ? parseInt(inputValue, 10) : 0;
+  }
+
+  onInvestmentAmountChange(event: any): void {
+    let inputValue = event.target.value;
+
+    inputValue = inputValue.replace(/[^0-9]/g, '');
+
+    if (inputValue.length > 1 && inputValue.startsWith('0')) {
+        inputValue = inputValue.substring(1);
+    }
+    event.target.value = inputValue;
+
+    this.investmentAmount = inputValue ? parseInt(inputValue, 10) : 0;
   }
 
   onPeerFundClick(peerFund: any) {

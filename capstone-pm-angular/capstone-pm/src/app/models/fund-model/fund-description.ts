@@ -3,7 +3,7 @@ import { FundHistory } from "./fund-history"
 import { PeerFund } from "./peer-fund"
 
 export class FundDescription {
-    averageReturnDTO: FundAverageReturn
+    averageReturnProjection: FundAverageReturn
     fundAMC: string
     fundAUM: number
     fundDescription: string
@@ -18,7 +18,7 @@ export class FundDescription {
     peerFunds: PeerFund[]
 
     constructor() {
-        this.averageReturnDTO = new FundAverageReturn
+        this.averageReturnProjection = new FundAverageReturn
         this.fundAMC = ''
         this.fundAUM = 0
         this.fundDescription = ''

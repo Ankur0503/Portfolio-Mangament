@@ -6,6 +6,8 @@ import ideas.capstone_pm.entity.FundReturn;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface FundReturnRepository extends CrudRepository<FundReturn, Integer> {
     FundReturnProjection findByFundFundId(Integer fundId);
 

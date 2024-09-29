@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/register", "/auth/login", "/users", "/filters", "/mutual-funds/calculate/return", "/user/cart/process", "mutual-funds", "mutual-funds/user/investment/{fundId}", "/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/admin/**", "/mutual-funds/add").hasRole("ADMIN")
+                        .requestMatchers("/mutual-funds/add", "/fund-returns").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                 )
                 .headers(headers -> headers.frameOptions().sameOrigin()

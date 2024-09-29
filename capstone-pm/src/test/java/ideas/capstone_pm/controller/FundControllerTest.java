@@ -123,7 +123,7 @@ public class FundControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", header)
                 .content(new ObjectMapper().writeValueAsString(fundDescriptionDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @WithMockUser(username = "abc@gmail.com", roles = {"USER"})

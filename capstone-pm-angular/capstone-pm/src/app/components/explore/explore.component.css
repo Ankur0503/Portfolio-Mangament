@@ -1,92 +1,85 @@
-.explore-container{
-    margin: 0;
-    padding: 0;
+.explore-container {
+  margin: 0;
+  padding: 0;
 }
- 
+
 .sidebar {
-    position: fixed;
-    top: 80px;
-    left: 20px; 
-    width: 300px; 
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    height: calc(100vh - 40px); 
-    overflow-y: auto; 
-  }
-
-.form-check input, .form-check label{
-    margin-left: 10px ;
+  position: fixed;
+  top: 80px;
+  left: 20px; 
+  width: 300px; 
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  height: calc(100vh - 40px); 
+  overflow-y: auto; 
 }
 
-/* Filter Section */
-.filter-section {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f8f9fa; /* Light background color */
-    border: 1px solid #ddd; /* Subtle border */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  }
-  
-  /* Filter Section Heading */
-  .filter-section h6 {
-    margin-bottom: 15px;
-    font-size: 1.1em; /* Slightly larger text */
-    font-weight: bold; /* Bold text */
-    color: #333; /* Darker text color */
-  }
-  
-  /* Scrollable Section */
-  .scrollable-section {
-    max-height: 200px; /* Fixed height */
-    overflow-y: auto; /* Scrollable content */
-    padding-right: 10px; /* Space for scrollbar */
-    padding-left: 10px; /* Add padding for consistency */
-    border-top: 1px solid #ddd; /* Top border for separation */
-  }
-  
-  /* Form Check Enhancements */
-  .form-check {
-    margin-bottom: 10px;
-    position: relative; /* For proper positioning of labels */
-    padding-left: 25px; /* Space for custom checkmark */
-  }
-  
-  .form-check-input {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  .form-check-label {
-    display: inline-block;
-    margin-left: 5px; /* Space between checkbox and label */
-    cursor: pointer; /* Pointer cursor on hover */
-    color: #555; /* Slightly lighter text color */
-  }
-  
-  .form-check-input:focus ~ .form-check-label {
-    color: #4CAF50; /* Highlight label on focus */
-  }
-  
+.form-check input, .form-check label {
+  margin-left: 10px;
+}
 
+.filter-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section h6 {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}
+
+.scrollable-section {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.form-check {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 25px;
+}
+
+.form-check-input {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-check-label {
+  display: inline-block;
+  margin-left: 5px;
+  cursor: pointer;
+  color: #555;
+}
+
+.form-check-input:focus ~ .form-check-label {
+  color: #4CAF50;
+}
 
 .main {
-    margin-left: 340px; /* Adjust based on sidebar width */
-    padding: 20px;
-    flex: 1;
-    margin-top: 20px;
-  }
-
+  margin-left: 340px;
+  padding: 20px;
+  flex: 1;
+  margin-top: 20px;
+}
 
 .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: left;
 }
 
 .no-results {
@@ -95,30 +88,30 @@
 }
 
 .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 15px;
-    width: 300px;
-    background-color: #edfaee;
-    cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 15px;
+  width: 300px;
+  background-color: #edfaee;
+  cursor: pointer;
 }
-  
+
 .card-header {
-    margin-bottom: 10px;
-    background-color: rgb(143 222 160);
+  margin-bottom: 10px;
+  background-color: rgb(143 222 160);
 }
-  
+
 .card-header h3 {
-    margin: 0;
-    font-size: 1.2em;
+  margin: 0;
+  font-size: 1.2em;
 }
-  
+
 .card-body p {
-    margin: 5px 0;
+  margin: 5px 0;
 }
-  
+
 .card-body p strong {
-    display: inline-block;
-    width: 120px;
+  display: inline-block;
+  width: 120px;
 }

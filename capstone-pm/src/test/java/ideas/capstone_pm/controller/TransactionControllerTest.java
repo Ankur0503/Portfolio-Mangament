@@ -89,7 +89,7 @@ public class TransactionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", header)
                 .content(new ObjectMapper().writeValueAsString(transaction)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.transactionId").value(1))
                 .andExpect(jsonPath("$.transactionInitialInvestment").value(1000.0));
     }

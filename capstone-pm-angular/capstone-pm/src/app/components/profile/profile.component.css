@@ -5,7 +5,7 @@
 }
 
 .animated-form {
-    background-color: #e9f7ef; /* Light green background */
+    background-color: #e9f7ef;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(40, 167, 69, 0.1); /* Light overlay */
+    background: rgba(40, 167, 69, 0.1);
     transform: scale(1.5);
     transition: transform 0.5s ease;
     z-index: 0;
@@ -36,7 +36,7 @@
 }
 
 h2 {
-    color: #155724; /* Dark green for heading */
+    color: #155724;
     margin-bottom: 1.5rem;
     animation: fadeIn 1s ease-in-out;
 }
@@ -51,50 +51,48 @@ h2 {
 }
 
 .form-control:focus {
-    border-color: #28a745; /* Green border on focus */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Green shadow */
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
 .btn-spaced {
-    margin: 0 10px; /* Adjust the value as needed for desired spacing */
+    margin: 0 10px;
 }
 
 .button-wrapper {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    margin-top: 1.5rem; /* Add some space above */
+    justify-content: center;
+    margin-top: 1.5rem;
 }
 
-
 .btn-animated {
-    background-color: #28a745; /* Green button */
+    background-color: #28a745;
     border: none;
-    padding: 10px 20px; /* Adjust padding for better appearance */
-    border-radius: 5px; /* Slight rounding for aesthetics */
-    font-size: 1rem; /* Font size for better readability */
-    color: white; /* Text color */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: white;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-    cursor: pointer; /* Cursor pointer */
-    position: relative; /* For shadow effect */
+    cursor: pointer;
+    position: relative;
 }
 
 .btn-animated:hover {
-    background-color: #218838; /* Darker green on hover */
-    transform: translateY(-3px); /* Slight lift on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-animated:active {
-    transform: translateY(0); /* Reset on click */
-    box-shadow: none; /* Remove shadow on click */
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn-animated:focus {
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Green shadow on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
-/* Keyframes for fade-in effect */
 @keyframes fadeIn {
     from {
         opacity: 0;

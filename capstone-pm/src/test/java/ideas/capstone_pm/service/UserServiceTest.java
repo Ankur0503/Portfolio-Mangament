@@ -1,6 +1,7 @@
 package ideas.capstone_pm.service;
 
 import ideas.capstone_pm.dto.UserDTO;
+import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.projection.UserProjection;
 import ideas.capstone_pm.entity.ApplicationUser;
 import ideas.capstone_pm.exception.userexpcetions.EmailAlreadyRegisteredException;
@@ -54,7 +55,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldAddUserSuccess() {
+    void shouldAddUser() {
         ApplicationUser applicationUser = createApplicationUser();
         when(userRepository.existsByUserEmail(TEST_EMAIL)).thenReturn(false);
         when(passwordEncoder.encode(TEST_PASSWORD)).thenReturn(ENCODED_PASSWORD);
@@ -67,7 +68,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldAddUserEmailAlreadyRegistered() {
+    void shouldThrowEmailAlreadyRegistered() {
         ApplicationUser applicationUser = createApplicationUser();
         when(userRepository.existsByUserEmail(TEST_EMAIL)).thenReturn(true);
 
@@ -76,7 +77,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldUpdateUserSuccess() {
+    void shouldUpdateUser() {
         UserDTO userDTO = createUserDTO();
         ApplicationUser existingUser = createExistingUser();
 
@@ -103,6 +104,37 @@ public class UserServiceTest {
         UserProjection actualUser = userService.getCurrentUser(authorizationHeader);
         assertNotNull(actualUser);
         assertEquals(expectedUser, actualUser);
+    }
+
+    @Test
+    void shouldThrowInvalidAuthorizationHeader() {
+        String authorizationHeader = "Invalid Header";
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.getCurrentUser(authorizationHeader);
+        });
+
+        assertEquals("Invalid authorization header.", exception.getMessage());
+        verifyNoInteractions(jwtUtil, userRepository);
+    }
+
+    @Test
+    public void shouldThrowEmailNotFound() {
+        // Arrange
+        String authorizationHeader = "Bearer valid-jwt";
+        String jwt = "valid-jwt";
+        String username = "unknown@example.com";
+
+        when(jwtUtil.extractUsername(jwt)).thenReturn(username);
+        when(userRepository.findByUserEmail(username)).thenReturn(null); // Simulate user not found
+
+        EmailNotFound exception = assertThrows(EmailNotFound.class, () -> {
+            userService.getCurrentUser(authorizationHeader);
+        });
+
+        assertNotNull(exception);
+        verify(jwtUtil, times(1)).extractUsername(jwt);
+        verify(userRepository, times(1)).findByUserEmail(username);
     }
 
     private UserProjection buildUserProjection() {

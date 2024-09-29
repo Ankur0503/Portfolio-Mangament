@@ -2,45 +2,53 @@
   <div class="sidebar fixed">
     <div class="sidebar-header d-flex justify-content-between align-items-center">
       <h5>Filters</h5>
-      <button class="btn btn-clear" style="border: 1px #77b477 solid;" (click)="onClickClearFilters()">Clear</button>
+      <button class="btn btn-clear" style="border: 1px #77b477 solid" (click)="onClickClearFilters()">
+        Clear
+      </button>
     </div>
-    <hr>
+    <hr />
     <div class="filter-section">
       <h6>AMC</h6>
       <div class="scrollable-section">
         <div class="form-check" *ngFor="let fundAMC of fundAMCs">
           <input type="checkbox" class="form-check-input" id="{{ fundAMC }}"
             (change)="onCheckBoxChange($event, fundAMC, 'AMC')" />
-          <label class="form-check-label" for="{{ fundAMC }}">{{ fundAMC }}</label>
+          <label class="form-check-label" for="{{ fundAMC }}">{{
+            fundAMC
+            }}</label>
         </div>
       </div>
     </div>
-    <hr>
+    <hr />
     <div class="filter-section">
       <h6>Risk</h6>
-      <div class="form-check" *ngFor="let fundRisk of fundRisks">
-        <input type="checkbox" class="form-check-input" id="{{fundRisk}}" (change)="onCheckBoxChange($event, fundRisk, 'Risk'
-        )" />
-        <label class="form-check-label" for="{{fundRisk}}">{{fundRisk}}</label>
+      <div class="scrollable-section">
+        <div class="form-check" *ngFor="let fundRisk of fundRisks">
+          <input type="checkbox" class="form-check-input" id="{{ fundRisk }}"
+            (change)="onCheckBoxChange($event, fundRisk, 'Risk')" />
+          <label class="form-check-label" for="{{ fundRisk }}">{{
+            fundRisk
+            }}</label>
+        </div>
       </div>
     </div>
-    <hr>
+    <hr />
     <div class="filter-section">
       <h6>AUM</h6>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="upto_1"
-          (change)="onCheckBoxChange($event, '1000000000', 'AUM')" [checked]="isChecked('1000000000')" />
-        <label class="form-check-label" for="upto_1">Upto 10Cr</label>
+          (change)="onCheckBoxChange($event, '100000000000', 'AUM')" [checked]="isChecked('100000000000')" />
+        <label class="form-check-label" for="upto_1">Upto 1,000Cr</label>
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="upto_3"
-          (change)="onCheckBoxChange($event, '3000000000', 'AUM')" [checked]="isChecked('3000000000')" />
-        <label class="form-check-label" for="upto_3">Upto 30Cr</label>
+          (change)="onCheckBoxChange($event, '300000000000', 'AUM')" [checked]="isChecked('300000000000')" />
+        <label class="form-check-label" for="upto_3">Upto 3,000Cr</label>
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="upto_5"
-          (change)="onCheckBoxChange($event, '5000000000', 'AUM')" [checked]="isChecked('5000000000')" />
-        <label class="form-check-label" for="upto_5">Upto 50Cr</label>
+          (change)="onCheckBoxChange($event, '500000000000', 'AUM')" [checked]="isChecked('500000000000')" />
+        <label class="form-check-label" for="upto_5">Upto 5,000Cr</label>
       </div>
     </div>
   </div>
@@ -48,7 +56,9 @@
   <div class="main">
     <div class="cards-container">
       <div *ngIf="filteredFundResponses.length === 0" class="no-results text-center">
-        <p>No funds available at the moment. Try changing or clearing the Filters</p>
+        <p>
+          No funds available at the moment. Try changing or clearing the Filters
+        </p>
       </div>
 
       <div class="card" *ngFor="let fundResponse of filteredFundResponses" (click)="onCardClick(fundResponse)">
@@ -56,12 +66,21 @@
           <h3>{{ fundResponse.fundName }}</h3>
         </div>
         <div class="card-body">
-          <p><strong>Rating</strong> {{ fundResponse.fundRating }}</p>
+          <p>
+            <strong>Rating</strong>
+            
+            <i [ngClass]="fundResponse.fundRating >= 1 ? 'bi bi-star-fill text-success' : 'bi bi-star'"></i>
+            <i [ngClass]="fundResponse.fundRating >= 2 ? 'bi bi-star-fill text-success' : 'bi bi-star'"></i>
+            <i [ngClass]="fundResponse.fundRating >= 3 ? 'bi bi-star-fill text-success' : 'bi bi-star'"></i>
+            <i [ngClass]="fundResponse.fundRating >= 4 ? 'bi bi-star-fill text-success' : 'bi bi-star'"></i>
+            <i [ngClass]="fundResponse.fundRating >= 5 ? 'bi bi-star-fill text-success' : 'bi bi-star'"></i>
+
+          </p>
           <p><strong>Category</strong> {{ fundResponse.fundType }}</p>
           <p><strong>Risk</strong> {{ fundResponse.fundRisk }}</p>
           <p>
             <strong>1 yr return</strong>
-            {{ fundResponse.fundReturn.fundReturn1Year }}
+            {{ fundResponse.fundReturn.fundReturn1Year }}%
           </p>
         </div>
       </div>

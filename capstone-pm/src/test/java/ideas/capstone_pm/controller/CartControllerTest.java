@@ -66,7 +66,7 @@ public class CartControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", header)
                 .content(new ObjectMapper().writeValueAsString(addToCartDTO)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.cartId").value(1))
                 .andExpect(jsonPath("$.plannedInvestment").value(1000.0));
     }
@@ -81,7 +81,7 @@ public class CartControllerTest {
 
         mockMvc.perform(get("/user/cart")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer your_token") // Replace with actual token
+                        .header("Authorization", "Bearer your_token")
                         .param("userId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].plannedInvestment").value(2000.0))
@@ -101,7 +101,7 @@ public class CartControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", header)
                 .param("cartId", "1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @WithMockUser(username = "test@gmail.com", roles = {"USER"})

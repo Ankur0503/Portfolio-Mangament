@@ -11,6 +11,7 @@ import ideas.capstone_pm.repository.FundReturnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -41,6 +42,7 @@ public class FundServiceUtils {
 
     public FundDescriptionDTO buildFundDTO(Fund fund) {
         List<PeerFundsProjection> peerFunds = fundRepository.findByFundTypeAndFundIdNotIn(fund.getFundType(), List.of(fund.getFundId()));
+        Collections.shuffle(peerFunds);
         AverageReturnProjection averageReturnProjection = fundReturnRepository.findAverageReturnsByFundType(fund.getFundType());
         return new FundDescriptionDTO(fund.getFundId(), fund.getFundName(), fund.getFundAMC(), fund.getFundRisk(), fund.getFundType(),
                 fund.getFundAUM(), fund.getFundNAV(), fund.getFundManager(), fund.getFundDescription(), fund.getFundRating(), buildFundHistoryDTO(fund.getFundReturn()), peerFunds, averageReturnProjection);

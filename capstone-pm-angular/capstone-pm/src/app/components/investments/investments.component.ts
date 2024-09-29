@@ -30,7 +30,7 @@ export class InvestmentsComponent {
         this.currentReturns += fund.currentValue
         this.investedValue += fund.transactionProjection.transactionInitialInvestment
       })
-      this.currentReturnsPercentage = parseFloat(((this.currentReturns / this.investedValue) * 100).toFixed(2));
+      this.currentReturnsPercentage = parseFloat((((this.currentReturns - this.investedValue )/ this.investedValue) * 100).toFixed(2));
 
     })
     this.authService.inInvestmentsPage = true

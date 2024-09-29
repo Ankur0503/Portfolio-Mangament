@@ -1,5 +1,6 @@
 package ideas.capstone_pm.service;
 
+import ideas.capstone_pm.exception.userexpcetions.EmailNotFound;
 import ideas.capstone_pm.projection.AdminProjection;
 import ideas.capstone_pm.projection.UserProjection;
 import ideas.capstone_pm.repository.AdminRepository;
@@ -13,8 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +58,17 @@ public class ApplicationUserDetailsServiceTest {
         UserDetails userDetails = applicationUserDetailsService.loadUserByUsername(username);
         assertEquals(userDetails.getUsername(), adminProjection.getAdminEmail());
         assertEquals(userDetails.getPassword(), adminProjection.getAdminPassword());
+    }
+
+    @Test
+    void shouldThrowEmailNotFound() {
+        String username = "test@gmail.com";
+        when(userRepository.existsByUserEmail(username)).thenReturn(false);
+        when(adminRepository.existsByAdminEmail(username)).thenReturn(false);
+
+        assertThrows(EmailNotFound.class, () -> {
+            applicationUserDetailsService.loadUserByUsername(username);
+        });
     }
 
     private UserProjection buildUserProjection() {
