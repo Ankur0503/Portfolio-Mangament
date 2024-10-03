@@ -26,6 +26,6 @@ export class HeroComponent {
   startAutoScroll() {
     this.autoScrollInterval = setInterval(() => {
       this.currentSlide = (this.currentSlide + 1) % this.features.length;
-    }, 2000);
+    }, 3000);
   }
 }

@@ -7,6 +7,7 @@ import ideas.capstone_pm.projection.TransactionProjection;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,6 +68,7 @@ public class MockUtils {
         when(transactionProjection.getUser()).thenReturn(userDTOProjection);
         when(transactionProjection.getFund()).thenReturn(fundDTOProjection);
         when(transactionProjection.getTransactionInitialInvestment()).thenReturn(10000.00);
+        when(transactionProjection.getTransactionDate()).thenReturn(new Date());
 
         return transactionProjection;
     }

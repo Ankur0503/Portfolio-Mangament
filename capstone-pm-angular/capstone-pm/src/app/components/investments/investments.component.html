@@ -7,6 +7,7 @@
       </p>
       <p class="card-text">
         <span class="fw-bold">Current Returns:</span> ₹{{ currentReturns.toFixed(2) | number }} ({{ currentReturnsPercentage }}%)
+        <span class="icon-sm"><i class="bi bi-arrow-up"></i></span> 
       </p>
     </div>
   </div>
@@ -14,7 +15,7 @@
   <div class="main">
     <div class="cards-container">
       <div *ngIf="userFunds.length === 0" class="no-results text-center">
-        <p>No funds available at the moment. Try changing or clearing the Filters</p>
+        <p>No Investments Yet./p>
       </div>
   
       <div class="card" *ngFor="let userFund of userFunds">
@@ -22,10 +23,10 @@
           <h3>{{ userFund.transactionProjection.fund.fundName }}</h3>
         </div>
         <div class="card-body">
-          <p><strong>Amount</strong> ₹{{ userFund.transactionProjection.transactionInitialInvestment }}</p>
-          <p><strong>Category</strong> {{ userFund.transactionProjection.fund.fundType }}</p>
-          <p><strong>Current Value</strong> ₹{{ userFund.currentValue | number }}</p>
-          <p><strong>Transaction Date</strong> {{ userFund.transactionProjection.transactionDate | date: 'dd MMM yyyy' }}</p>
+          <p><strong  >Amount</strong> ₹{{ userFund.transactionProjection.transactionInitialInvestment }}</p>
+          <p><strong  >Category</strong> {{ userFund.transactionProjection.fund.fundType }}</p>
+          <p><strong >Current Value</strong> ₹{{ userFund.currentValue.toFixed(2) | number }}</p>
+          <p><strong  >Transaction Date</strong> {{ userFund.transactionProjection.transactionDate | date: 'dd MMM yyyy' }}</p>
         </div>
       </div>
     </div>

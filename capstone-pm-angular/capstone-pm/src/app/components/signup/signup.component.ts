@@ -44,6 +44,7 @@ export class SignupComponent {
       userId: 0
     }
     this.authService.register(user).subscribe(response => {
+      alert("User Created Successfully")
       this.router.navigateByUrl("/signin")
     })
   }

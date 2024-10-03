@@ -77,7 +77,14 @@
 
           </p>
           <p><strong>Category</strong> {{ fundResponse.fundType }}</p>
-          <p><strong>Risk</strong> {{ fundResponse.fundRisk }}</p>
+          <div style="display: flex;">
+            <div style="margin-right: 94px;">
+              <strong>Risk</strong>
+            </div>
+            <div>
+              {{ fundResponse.fundRisk }}
+            </div>
+          </div>
           <p>
             <strong>1 yr return</strong>
             {{ fundResponse.fundReturn.fundReturn1Year }}%

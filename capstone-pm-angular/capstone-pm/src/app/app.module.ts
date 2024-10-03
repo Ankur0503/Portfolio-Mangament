@@ -18,6 +18,7 @@ import { HeroComponent } from './components/hero/hero.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FooterComponent } from './footer/footer.component';
+import { PasswordValidatorDirective } from './password-validator.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { FooterComponent } from './footer/footer.component';
     HeroComponent,
     ProfileComponent,
     FooterComponent,
+    PasswordValidatorDirective
   ],
   imports: [
     BrowserModule,

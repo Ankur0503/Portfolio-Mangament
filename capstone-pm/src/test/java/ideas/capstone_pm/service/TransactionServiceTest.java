@@ -9,6 +9,7 @@ import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
 import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
+import ideas.capstone_pm.util.InvestmentCalculator;
 import ideas.capstone_pm.util.TransactionServiceUtils;
 import ideas.capstone_pm.utils.MockUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,6 +26,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,6 +60,8 @@ public class TransactionServiceTest {
     TransactionServiceUtils transactionServiceUtils;
     @Mock
     FundReturnRepository fundReturnRepository;
+    @Mock
+    InvestmentCalculator investmentCalculator;
     @InjectMocks
     TransactionService transactionService;
 
@@ -73,6 +78,11 @@ public class TransactionServiceTest {
 
         when(transactionRepository.findByUser(user)).thenReturn(mockTransactions);
         when(fundReturnRepository.findByFundFundId(any(Integer.class))).thenReturn(mockedFundReturnProjection);
+
+        Double expectedReturn = 1104.71;
+        doReturn(expectedReturn).when(investmentCalculator)
+                .calculateCurrentValue(Mockito.anyDouble(), Mockito.anyDouble(), Mockito.any(Date.class));
+
 
         List<TransactionResponseDTO> actualTransactions = transactionService.getFundsByUser(user);
 

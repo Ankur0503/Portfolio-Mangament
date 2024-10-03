@@ -1,51 +1,59 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { validatePassword } from 'src/app/validators/password-validator';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
-  userProfile = {
-    userId: '',
-    userName: '',
-    userPassword: '',
-    userPhone: ''
-  };
-
-  constructor(public authService: AuthService) {}
-
-  ngOnInit() {
-    this.authService.getLoggedInUser().subscribe(response => {
-      this.userProfile.userId = response.data.userId
-      this.userProfile.userName = response.data.userName
-      this.userProfile.userPhone = response.data.userPhone
-    })
-  }
-  
+export class ProfileComponent implements OnInit {
+  profileForm!: FormGroup;
   isEditing = false;
+
+  constructor(private fb: FormBuilder, public authService: AuthService) {}
+
+  ngOnInit(): void {
+    // Initialize the form with default values
+    this.profileForm = this.fb.group({
+      userName: ['', [Validators.required]],
+      userPassword: ['', [Validators.required, validatePassword()]],
+      userPhone: ['', [Validators.required]]
+    });
+
+    // Get user profile data from the service
+    this.authService.getLoggedInUser().subscribe(response => {
+      this.profileForm.patchValue({
+        userName: response.data.userName,
+        userPhone: response.data.userPhone,
+        // You might not want to prefill the password field
+      });
+    });
+  }
 
   onEdit() {
     this.isEditing = true;
+    this.profileForm.enable();
   }
 
-  onSave(form: NgForm) {
-    if (form.valid) {
-      this.userProfile.userName = form.value.userName;
-      this.userProfile.userPassword = form.value.userPassword;
-      this.userProfile.userPhone = form.value.userPhone;
-      
-      this.authService.updateUser(this.userProfile).subscribe(response => {
+  onSave() {
+    if (this.profileForm.valid) {
+      const updatedProfile = this.profileForm.value;
 
-      })
+      // Save the updated profile using AuthService
+      this.authService.updateUser(updatedProfile).subscribe(response => {
+        // Handle the response here
+      });
+
       this.isEditing = false;
+      this.profileForm.disable(); // Disable form after save
     }
   }
 
-  onCancel(form: NgForm) {
+  onCancel() {
     this.isEditing = false;
-    form.resetForm();
+    this.profileForm.reset(); // Reset the form to initial values
+    this.ngOnInit(); // Reinitialize form with original data
   }
 }

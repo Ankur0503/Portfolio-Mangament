@@ -9,12 +9,16 @@ import ideas.capstone_pm.entity.Fund;
 import ideas.capstone_pm.entity.Transaction;
 import ideas.capstone_pm.repository.FundReturnRepository;
 import ideas.capstone_pm.repository.TransactionRepository;
+import ideas.capstone_pm.util.InvestmentCalculator;
 import ideas.capstone_pm.util.TransactionServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,8 @@ public class TransactionService {
     FundReturnRepository fundReturnRepository;
     @Autowired
     TransactionServiceUtils transactionServiceUtils;
+    @Autowired
+    InvestmentCalculator investmentCalculator;
 
     public List<TransactionResponseDTO> getFundsByUser(ApplicationUser user) {
         List<TransactionProjection> transactionProjections = transactionRepository.findByUser(user);
@@ -53,16 +59,12 @@ public class TransactionService {
         fund.setFundId(transactionProjection.getFund().getFundId());
 
         FundReturnProjection fundReturnProjection = fundReturnRepository.findByFundFundId(fund.getFundId());
-        Double currentValue = calculateCurrentValue(transactionProjection.getTransactionInitialInvestment(), fundReturnProjection.getFundReturnTotal());
+        Double currentValue = investmentCalculator.calculateCurrentValue(transactionProjection.getTransactionInitialInvestment(), fundReturnProjection.getFundReturn1Year(), transactionProjection.getTransactionDate());
 
         TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();
         transactionResponseDTO.setTransactionProjection(transactionProjection);
         transactionResponseDTO.setCurrentValue(currentValue);
 
         return transactionResponseDTO;
-    }
-
-    private Double calculateCurrentValue(Double initialInvestment, Double fundReturnTotal) {
-        return initialInvestment * (1 + (fundReturnTotal / 100));
     }
 }
